@@ -1,7 +1,7 @@
 import logoDark from "./logo_dark.svg";
 import logoLight from "./logo_light.svg";
 
-const Header = () => {
+export const Header = () => {
     return (
         <header className="flex flex-col gap-9 w-full">
             <div className="w-[500px] max-w-[100vw] p-4">
@@ -19,6 +19,4 @@ const Header = () => {
             </div>
         </header>
     )
-}
-
-export default Header
+};
