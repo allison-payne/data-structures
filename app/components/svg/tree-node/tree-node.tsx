@@ -1,7 +1,8 @@
 import { viewBoxX, viewBoxY } from "../svg";
 
-const verticalOffset = 5;
-export const NODE_WIDTH = 5
+const VERTICAL_OFFSET = 5;
+const HORIZONTAL_OFFSET = 5;
+const NODE_RADIUS = 3
 
 export type TreeNodeProps = {
     x: number;
@@ -10,10 +11,13 @@ export type TreeNodeProps = {
 };
 
 export const TreeNode = ({ x, y, data }: TreeNodeProps) => {
+    const xPos = x * viewBoxX + HORIZONTAL_OFFSET;
+    const yPos = y * viewBoxY + VERTICAL_OFFSET;
+    
     return (
         <g>
-            <circle fill="white" r={5} cx={x * viewBoxX} cy={y * viewBoxY + verticalOffset} />
-            <text x={x * viewBoxX} y={y * viewBoxY + verticalOffset} text-anchor="middle" style={{ fontSize: '4px' }} dy={'2px'}>{data}</text>
+            <circle fill="white" r={NODE_RADIUS} cx={xPos} cy={yPos} />
+            <text x={xPos} y={yPos} textAnchor="middle" style={{ fontSize: '4px' }} dy={'1.5px'}>{data}</text>
         </g>
     )
 };

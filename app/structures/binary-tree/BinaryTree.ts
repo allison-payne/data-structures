@@ -1,4 +1,5 @@
-import { SPACE_BETWEEN_CHILDREN, TreeNode } from "./TreeNode";
+import { SPACE_BETWEEN_CHILDREN, SPACE_BETWEEN_SIBLINGS } from "./constants";
+import { TreeNode } from "./TreeNode";
 
 export class BinaryTree<T> {
 
@@ -41,8 +42,8 @@ export class BinaryTree<T> {
     data.forEach((datum) => this.add(datum))
   }
 
-  findMin(): TreeNode<T> {
-    let current = this.root as TreeNode<T>;
+  findMin(node = this.root): TreeNode<T> {
+    let current = node as TreeNode<T>;
     while (current.left !== null) {
       current = current.left;
     }
@@ -115,16 +116,16 @@ export class BinaryTree<T> {
         return node;
       } else if (data < node.data) {
         node.left = removeNode(node.left, data);
-        if (node.left){
-           node.left.parent = node;
-           node.left.coordinates.y = node.left.coordinates.y - SPACE_BETWEEN_CHILDREN;
+        if (node.left) {
+          node.left.parent = node;
+          node.left.coordinates.y = node.left.coordinates.y - SPACE_BETWEEN_CHILDREN;
         }
         return node;
       } else {
         node.right = removeNode(node.right, data);
-        if (node.right){
-           node.right.parent = node;
-           node.right.coordinates.y = node.right.coordinates.y - SPACE_BETWEEN_CHILDREN;
+        if (node.right) {
+          node.right.parent = node;
+          node.right.coordinates.y = node.right.coordinates.y - SPACE_BETWEEN_CHILDREN;
         }
         return node;
       }
@@ -230,19 +231,35 @@ export class BinaryTree<T> {
     };
   }
 
-  calculateNodeX(): void {
+  private calcRightX(node: TreeNode<T>) {
+    return node.coordinates.x + (SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN));
+  }
 
-    const SPACE_BETWEEN_SIBLINGS = 0.1;
+  private calcParentX(node: TreeNode<T>) {
+    const right = this.calcRightX(node);
+    return node.coordinates.x + (right - node.coordinates.x) / 2;
+  }
+
+  calculateNodeX(): void {
     let start = this.findMin();
     let currentNode = start;
 
-    while (currentNode.parent !== null) {
-      currentNode.parent.coordinates.x = currentNode.coordinates.x + SPACE_BETWEEN_SIBLINGS;
+    // This still needs some work
+    if (currentNode.right) {
+      currentNode.right.coordinates.x = this.calcRightX(currentNode) / 2;
+    }
+
+    while (currentNode.parent) {
+
+      if (currentNode.parent.right) {
+        currentNode.parent.right.coordinates.x = this.calcRightX(currentNode);;
+      }
+
+      currentNode.parent.coordinates.x = this.calcParentX(currentNode);
+
       currentNode = currentNode.parent;
+
     }
-    while (currentNode.right !== null){
-      currentNode.right.coordinates.x = currentNode.coordinates.x + SPACE_BETWEEN_SIBLINGS;
-      currentNode = currentNode.right;
-    }
+    
   }
 }

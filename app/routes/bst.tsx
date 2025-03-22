@@ -15,22 +15,22 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function BST() {
-  const initialTreeData = [20, 10, 21, 9, 17, 12, 5, 14, 3];
+  const initialTreeData = [20, 18, 21, 9, 15, 5, 6, 3, 4, 2, 1, 19, 22];
   const bst = new BinaryTree<number>();
   bst.addMultiple(initialTreeData);
   const [tree] = useState<BinaryTree<number>>(bst);
-
-  const treeStartX = 50;
-  const treeStartY = 20;
+  //Use to trigger redraw on calculation;
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
     tree.calculateNodeX();
-    console.log(tree)
+    console.log(tree);
+    setIsReady(true);
   }, [tree]);
 
   return (
     <>
-      <BinaryTreeViewer<number> tree={tree} />
+      {isReady && <BinaryTreeViewer<number> tree={tree} />}
     </>
   );
 }

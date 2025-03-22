@@ -1,4 +1,4 @@
-export const SPACE_BETWEEN_CHILDREN = 0.1;
+import { SPACE_BETWEEN_CHILDREN } from "./constants";
 
 export class TreeNode<T> {
     data: T;
