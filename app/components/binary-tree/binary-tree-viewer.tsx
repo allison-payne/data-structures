@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import React from "react";
 import type { BinaryTree } from "~/structures/binary-tree/BinaryTree";
 import SVG from "../svg";
 import { initialViewBox } from "../svg/constants";
@@ -17,27 +18,25 @@ export function BinaryTreeViewer<T>({ tree }: BinaryTreeSVGProps<T>): JSX.Elemen
     return (
         <SVG>
             {orderedNodes?.map((node, index) => {
-                return (<>
+                return (<React.Fragment key={`${index}`}>
                     {node.left &&
-                        <TreeBranch
+                        <TreeBranch key={`${index}-left`}
                             x1={getScaledCoords(node.coordinates.x)}
                             y1={getScaledCoords(node.coordinates.y)}
                             x2={getScaledCoords(node.left.coordinates.x)}
                             y2={getScaledCoords(node.left.coordinates.y)} />
                     }
                     {node.right &&
-                        <TreeBranch
+                        <TreeBranch key={`${index}-right`}
                             x1={getScaledCoords(node.coordinates.x)}
                             y1={getScaledCoords(node.coordinates.y)}
                             x2={getScaledCoords(node.right.coordinates.x)}
                             y2={getScaledCoords(node.right.coordinates.y)} />
                     }
-                </>)
+                </React.Fragment>)
             })}
             {orderedNodes?.map((node, index) => {
-                return (<>
-                    <TreeNodeSVG<T> node={node} key={index} />
-                </>)
+                return (<TreeNodeSVG<T> node={node} key={index} />)
             })}
         </SVG>
     )
