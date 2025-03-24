@@ -1,8 +1,6 @@
 import type { TreeNode } from "~/structures/binary-tree/TreeNode";
-import { viewBoxX, viewBoxY } from "../svg";
+import { initialViewBox } from "../constants";
 
-const VERTICAL_OFFSET = 0;
-const HORIZONTAL_OFFSET = 0;
 const NODE_RADIUS = 3
 
 export type TreeNodeSVGProps<T> = {
@@ -12,8 +10,8 @@ export type TreeNodeSVGProps<T> = {
 export function TreeNodeSVG<T>({ node }: TreeNodeSVGProps<T>) {
     const { x, y } = node.coordinates;
     const { data } = node;
-    const xPos = x * viewBoxX + HORIZONTAL_OFFSET;
-    const yPos = y * viewBoxY + VERTICAL_OFFSET;
+    const xPos = x * initialViewBox;
+    const yPos = y * initialViewBox;
 
     let text = data as number;
 

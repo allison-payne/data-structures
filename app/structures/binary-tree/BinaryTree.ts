@@ -9,10 +9,6 @@ export class BinaryTree<T> {
     this.root = null;
   }
 
-  private calcNextX(xValue: number, node: TreeNode<T>): number {
-    return xValue + (SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN));
-  }
-
   add(treeNode: T): void | null {
     const node = this.root;
     if (node === null) {
@@ -184,7 +180,7 @@ export class BinaryTree<T> {
     };
   }
 
-  preOrderNodes(): Array<TreeNode<T>> | null {
+  preOrder(): Array<TreeNode<T>> | null {
     if (this.root == null) {
       return null;
     } else {
@@ -199,7 +195,7 @@ export class BinaryTree<T> {
     };
   }
 
-  postOrderNodes(): Array<TreeNode<T>> | null {
+  postOrder(): Array<TreeNode<T>> | null {
     if (this.root == null) {
       return null;
     } else {
@@ -214,7 +210,7 @@ export class BinaryTree<T> {
     }
   }
 
-  levelOrderNodes(): Array<TreeNode<T>> | null {
+  levelOrder(): Array<TreeNode<T>> | null {
     let result = new Array<TreeNode<T>>();
     let Q = new Array<TreeNode<T>>();
     if (this.root != null) {
@@ -236,23 +232,24 @@ export class BinaryTree<T> {
   }
 
   calculateNodeX(): void {
-    const orderedNodes = this.inOrder();
+    const offset = (node: TreeNode<T>)=>(SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN))
+    
+    const calcNextX = (xValue: number, node: TreeNode<T>): number => {
+      return xValue + offset(node);
+    }
+
     let xAcc = INITIAL_OFFSET;
+    const orderedNodes = this.inOrder();
     orderedNodes?.forEach((node) => {
       if (node === this.root) xAcc = 0.5;
       node.coordinates.x = xAcc;
-      xAcc = + this.calcNextX(xAcc, node);
+      xAcc = + calcNextX(xAcc, node);
     });
 
-    const preOrderNodes = this.preOrderNodes();
+    const preOrderNodes = this.preOrder();
     preOrderNodes?.forEach((node) => {
       if (node.left && node.right) {
-        node.coordinates.x = (node.right.coordinates.x - node.left.coordinates.x) / 2;
-      }
-      if(!node.left && !node.right && node.parent && node.coordinates.x != INITIAL_OFFSET){
-        const parent = node.parent;
-        if(parent.left)
-        node.coordinates.x = parent.coordinates.x + (parent.coordinates.x - parent.left.coordinates.x);
+        node.coordinates.x = node.left.coordinates.x + ((node.right.coordinates.x - node.left.coordinates.x) / 2);
       }
     });
 
