@@ -1,18 +1,8 @@
 
 
 import { useEffect, useState } from "react";
-import BinaryTreeViewer from "~/components/binary-tree";
+import BinaryTreeViewer from "~/components/binary-tree-viewer";
 import { BinaryTree } from "~/structures/binary-tree/BinaryTree";
-import type { Route } from "./+types/bst";
-
-
-
-export function meta({ }: Route.MetaArgs) {
-  return [
-    { title: "Data Structures | Binary Search Tree" },
-    { name: "description", content: "Binary Search Tree Class" },
-  ];
-}
 
 export default function BST() {
   const initialTreeData = [20, 18, 21, 9, 15, 5, 6, 3, 4, 2, 1, 19, 22];
@@ -30,6 +20,14 @@ export default function BST() {
   return (
     <>
       {isReady && <BinaryTreeViewer<number> tree={tree} />}
+      <div className="h-[600px]">
+        <form>
+          <label className="block" htmlFor="addNode">Add Node</label>
+          <input type="number" id="addNode" />
+          <label className="block" htmlFor="removeNode">Remove Node</label>
+          <button className="block" id="clearTree">Clear Tree</button>
+        </form>
+      </div>
     </>
   );
 }
