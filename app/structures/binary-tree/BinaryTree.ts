@@ -1,4 +1,4 @@
-import { SPACE_BETWEEN_CHILDREN, SPACE_BETWEEN_SIBLINGS } from "./constants";
+import { INITIAL_OFFSET, SPACE_BETWEEN_CHILDREN, SPACE_BETWEEN_SIBLINGS } from "./constants";
 import { TreeNode } from "./TreeNode";
 
 export class BinaryTree<T> {
@@ -7,6 +7,10 @@ export class BinaryTree<T> {
 
   constructor() {
     this.root = null;
+  }
+
+  private calcNextX(xValue: number, node: TreeNode<T>): number {
+    return xValue + (SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN));
   }
 
   add(treeNode: T): void | null {
@@ -231,35 +235,27 @@ export class BinaryTree<T> {
     };
   }
 
-  private calcRightX(node: TreeNode<T>) {
-    return node.coordinates.x + (SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN));
-  }
-
-  private calcParentX(node: TreeNode<T>) {
-    const right = this.calcRightX(node);
-    return node.coordinates.x + (right - node.coordinates.x) / 2;
-  }
-
   calculateNodeX(): void {
-    let start = this.findMin();
-    let currentNode = start;
+    const orderedNodes = this.inOrder();
+    let xAcc = INITIAL_OFFSET;
+    orderedNodes?.forEach((node) => {
+      if (node === this.root) xAcc = 0.5;
+      node.coordinates.x = xAcc;
+      xAcc = + this.calcNextX(xAcc, node);
+    });
 
-    // This still needs some work
-    if (currentNode.right) {
-      currentNode.right.coordinates.x = this.calcRightX(currentNode) / 2;
-    }
-
-    while (currentNode.parent) {
-
-      if (currentNode.parent.right) {
-        currentNode.parent.right.coordinates.x = this.calcRightX(currentNode);;
+    const preOrderNodes = this.preOrderNodes();
+    preOrderNodes?.forEach((node) => {
+      if (node.left && node.right) {
+        node.coordinates.x = (node.right.coordinates.x - node.left.coordinates.x) / 2;
       }
+      if(!node.left && !node.right && node.parent && node.coordinates.x != INITIAL_OFFSET){
+        const parent = node.parent;
+        if(parent.left)
+        node.coordinates.x = parent.coordinates.x + (parent.coordinates.x - parent.left.coordinates.x);
+      }
+    });
 
-      currentNode.parent.coordinates.x = this.calcParentX(currentNode);
-
-      currentNode = currentNode.parent;
-
-    }
-    
+    console.log(preOrderNodes)
   }
 }

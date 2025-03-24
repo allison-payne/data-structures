@@ -24,7 +24,6 @@ export default function BST() {
 
   useEffect(() => {
     tree.calculateNodeX();
-    console.log(tree);
     setIsReady(true);
   }, [tree]);
 

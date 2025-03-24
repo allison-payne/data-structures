@@ -9,7 +9,7 @@ export type SVGProps = {
 
 const SVG = ({ children }: SVGProps) => {
     return (
-        <div className="w-150 overflow-auto">
+        <div className="w-300 overflow-auto">
             <svg viewBox={`0 0 ${viewBoxX} ${viewBoxY}`}>{children}</svg>
         </div>
     )

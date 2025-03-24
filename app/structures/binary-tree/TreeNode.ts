@@ -1,4 +1,4 @@
-import { SPACE_BETWEEN_CHILDREN } from "./constants";
+import { INITIAL_OFFSET, SPACE_BETWEEN_CHILDREN } from "./constants";
 
 export class TreeNode<T> {
     data: T;
@@ -14,7 +14,7 @@ export class TreeNode<T> {
         this.parent = parent ? parent : null;
         this.coordinates = {
             x: 0,
-            y: parent ? parent.coordinates.y + SPACE_BETWEEN_CHILDREN : 0
+            y: parent ? parent.coordinates.y + SPACE_BETWEEN_CHILDREN : INITIAL_OFFSET,
         }
     }
 }
