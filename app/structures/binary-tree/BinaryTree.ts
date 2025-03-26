@@ -38,8 +38,9 @@ export class BinaryTree<T> {
     }
   }
 
-  addMultiple(data: Array<T>): void {
-    data.forEach((datum) => this.add(datum))
+  addMultiple(data: Array<T>): BinaryTree<T> {
+    data.forEach((datum) => this.add(datum));
+    return this;
   }
 
   findMin(node = this.root): TreeNode<T> {
@@ -50,8 +51,8 @@ export class BinaryTree<T> {
     return current;
   }
 
-  findMax(): TreeNode<T> {
-    let current = this.root as TreeNode<T>;
+  findMax(node = this.root): TreeNode<T> {
+    let current = node as TreeNode<T>;
     while (current.right !== null) {
       current = current.right;
     }
@@ -163,9 +164,9 @@ export class BinaryTree<T> {
     };
   }
 
-  inOrder(): Array<TreeNode<T>> | null {
+  inOrder(): Array<TreeNode<T>> {
     if (this.root == null) {
-      return null;
+      return [];
     } else {
       var result = Array<TreeNode<T>>();
 
@@ -252,7 +253,5 @@ export class BinaryTree<T> {
         node.coordinates.x = node.left.coordinates.x + ((node.right.coordinates.x - node.left.coordinates.x) / 2);
       }
     });
-
-    console.log(preOrderNodes)
   }
 }

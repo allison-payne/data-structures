@@ -1,2 +1,2 @@
 
-export const initialViewBox = 100;
+export const initialViewBox = 75;
