@@ -15,7 +15,6 @@ const SVG = ({ children }: SVGProps) => {
     }, [Viewer]);
 
     const setValueHandler = (e) => {
-        console.log(e);
         setValue(e);
     };
 
@@ -31,8 +30,9 @@ const SVG = ({ children }: SVGProps) => {
             SVGBackground="grey"
             value={value}
             onChangeValue={setValueHandler}
-            onClick={(event) =>
-                console.log("click", event.x, event.y, event.originalEvent)
+            onClick={(event) => {
+                //console.log("click", event.x, event.y, event.originalEvent)
+            }
             }
         >
             <svg viewBox={`0 0 ${100} ${100}`}>{children}</svg>
