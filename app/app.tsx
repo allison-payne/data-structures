@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import Layout from "./layout";
-import BST, { BST_ROUTE } from "./routes/bst";
+import BST, { BST_ROUTE } from "./routes/binary-tree";
 import Home from "./routes/home";
 
 import './app.css';

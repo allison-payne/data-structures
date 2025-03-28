@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { BST_ROUTE } from "~/routes/bst";
+import { BST_ROUTE } from "~/routes/binary-tree";
 import { HOME_ROUTE } from "~/routes/home";
 import { TRIE_ROUTE } from "~/routes/trie";
 import logoDark from "./logo_dark.svg";
