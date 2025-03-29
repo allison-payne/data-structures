@@ -1,7 +1,7 @@
 
 
-import BinaryTreeForm from "~/components/binary-tree-form";
-import BinaryTreeViewer from "~/components/binary-tree-viewer";
+import BinaryTreeForm from "~/components/binary-tree/editor-form";
+import BinaryTreeSVGViewer from "~/components/binary-tree/svg-viewer";
 import { BinaryTreeProvider } from "~/context/BinaryTreeContext";
 
 export const BST_ROUTE = 'binary-search-tree';
@@ -12,7 +12,7 @@ export default function BST() {
   return (
     <BinaryTreeProvider<number> initialData={initialTreeData}>
       <div className="flex items-center justify-center dark:bg-neutral-400 border-0 rounded-2xl p-3">
-        <BinaryTreeViewer<number> />
+        <BinaryTreeSVGViewer<number> />
         <BinaryTreeForm<number> />
       </div>
     </BinaryTreeProvider>

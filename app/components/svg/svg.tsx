@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ReactSVGPanZoom, TOOL_NONE, type Tool, type Value } from "react-svg-pan-zoom";
+import { ReactSVGPanZoom, TOOL_AUTO, type Tool, type Value } from "react-svg-pan-zoom";
 
 export type SVGProps = {
     children: ReactNode
@@ -7,14 +7,14 @@ export type SVGProps = {
 
 const SVG = ({ children }: SVGProps) => {
     const Viewer = useRef<ReactSVGPanZoom>(null);
-    const [tool, setTool] = useState<Tool>(TOOL_NONE);
-    const [value, setValue] = useState<Value | null>(null);
+    const [tool, setTool] = useState<Tool>(TOOL_AUTO);
+    const [value, setValue] = useState<Value>({} as Value);
 
     useEffect(() => {
         Viewer.current && Viewer.current.fitToViewer();
     }, [Viewer]);
 
-    const setValueHandler = (e) => {
+    const setValueHandler = (e: Value) => {
         setValue(e);
     };
 
@@ -30,10 +30,6 @@ const SVG = ({ children }: SVGProps) => {
             SVGBackground="grey"
             value={value}
             onChangeValue={setValueHandler}
-            onClick={(event) => {
-                //console.log("click", event.x, event.y, event.originalEvent)
-            }
-            }
         >
             <svg viewBox={`0 0 ${100} ${100}`}>{children}</svg>
         </ReactSVGPanZoom>

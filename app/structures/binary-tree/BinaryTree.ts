@@ -119,14 +119,12 @@ export class BinaryTree<T> {
         node.left = removeNode(node.left, data);
         if (node.left) {
           node.left.parent = node;
-          node.left.coordinates.y = node.left.coordinates.y - SPACE_BETWEEN_CHILDREN;
         }
         return node;
       } else {
         node.right = removeNode(node.right, data);
         if (node.right) {
           node.right.parent = node;
-          node.right.coordinates.y = node.right.coordinates.y - SPACE_BETWEEN_CHILDREN;
         }
         return node;
       }
