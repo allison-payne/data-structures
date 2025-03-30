@@ -231,8 +231,8 @@ export class BinaryTree<T> {
   }
 
   calculateNodeX(): void {
-    const offset = (node: TreeNode<T>)=>(SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN))
-    
+    const offset = (node: TreeNode<T>) => (SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN))
+
     const calcNextX = (xValue: number, node: TreeNode<T>): number => {
       return xValue + offset(node);
     }
@@ -250,6 +250,17 @@ export class BinaryTree<T> {
       if (node.left && node.right) {
         node.coordinates.x = node.left.coordinates.x + ((node.right.coordinates.x - node.left.coordinates.x) / 2);
       }
+    });
+  }
+
+  calculateNodeY(): void {
+    const calcNextY = (node: TreeNode<T>): number => {
+      return node.parent ? node.parent.coordinates.y + SPACE_BETWEEN_CHILDREN : INITIAL_OFFSET;
+    }
+
+    const preOrderNodes = this.preOrder();
+    preOrderNodes?.forEach((node) => {
+      node.coordinates.y = calcNextY(node);
     });
   }
 }

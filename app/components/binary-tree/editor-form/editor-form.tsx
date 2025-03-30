@@ -3,7 +3,7 @@ import { useBinaryTreeContext } from "~/context/BinaryTreeContext";
 
 export function BinaryTreeForm<T>() {
   const addNodeInputRef = useRef<HTMLInputElement>(null);
-  const { selectedNode, addNode, removeSelectedNode, clearTree } = useBinaryTreeContext<T>();
+  const { selectedNode, isBalanced, min, max, addNode, removeSelectedNode, clearTree, } = useBinaryTreeContext<T>();
 
   const handleAddNode = useCallback(() => {
     const inputRef = addNodeInputRef.current
@@ -33,6 +33,20 @@ export function BinaryTreeForm<T>() {
       </div>
       <button className="block w-[100%] p-4 text-center bg-blue-400 rounded-4xl mt-3 mb-3 disabled:bg-blue-100" type="button" id="removeNode" onClick={handleRemoveClick} disabled={!selectedNode}>Remove Node</button>
       <button className="block w-[100%] p-4 text-center bg-blue-400 rounded-4xl" type="button" id="clearTree" onClick={handleClearTree}>Clear Tree</button>
+      <div className="h-[100%] p-3">
+        <div className="pt-2 pb-2">
+          <span className="block font-bold">Is it Balanced?</span>
+          <span className="block">{isBalanced ? 'Yes' : 'No'}</span>
+        </div>
+        <div className="pt-2 pb-2">
+          <span className="block font-bold">Minimum</span>
+          <span className="block">{min?.data as number}</span>
+        </div>
+        <div className="pt-2 pb-2">
+          <span className="block font-bold">Maximum</span>
+          <span className="block">{max?.data as number}</span>
+        </div>
+      </div>
     </div>
   );
 }

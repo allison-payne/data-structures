@@ -11,6 +11,9 @@ interface BinaryTreeContext<T> {
     tree: BinaryTree<T> | null;
     orderedTreeNodes: Array<TreeNode<T>> | null;
     selectedNode?: TreeNode<T>;
+    isBalanced: boolean;
+    min: TreeNode<T> | null;
+    max: TreeNode<T> | null;
     addNode: ((newNodeValue: T) => void);
     removeSelectedNode: (() => void);
     clearTree: () => void;
@@ -24,6 +27,9 @@ export function BinaryTreeProvider<T,>({ children, initialData }: BinaryTreeProv
     const defaultContext: BinaryTreeContext<T> = {
         tree: null,
         orderedTreeNodes: null,
+        isBalanced: false,
+        min: null,
+        max: null,
         addNode: () => { },
         removeSelectedNode: () => { },
         clearTree: () => { },
@@ -35,17 +41,25 @@ export function BinaryTreeProvider<T,>({ children, initialData }: BinaryTreeProv
     const [tree] = useState<BinaryTree<T>>(new BinaryTree<T>());
     const [orderedNodes, setOrderedNodes] = useState<Array<TreeNode<T>>>([]);
     const [selectedNode, setSelectedNode] = useState<TreeNode<T> | undefined>();
+    const [isBalanced, setIsBalanced] = useState<boolean>(false);
+    const [min, setMin] = useState<TreeNode<T> | null>(null);
+    const [max, setMax] = useState<TreeNode<T> | null>(null);
 
     const addNode = useCallback((newNodeValue: T) => {
         tree.add(newNodeValue);
+        tree.calculateNodeY();
         tree.calculateNodeX();
-        setOrderedNodes([...tree.inOrder()])
+        setMin(tree.findMin());
+        setMax(tree.findMax());
+        setIsBalanced(tree.isBalanced());
+        setOrderedNodes([...tree.inOrder()]);
     }, []);
 
     const removeSelectedNode = useCallback(() => {
         if (selectedNode) {
             tree.remove(selectedNode.data);
-            //tree.calculateNodeX();
+            tree.calculateNodeY();
+            tree.calculateNodeX();
             setSelectedNode(undefined);
             setOrderedNodes([...tree.inOrder()]);
         }
@@ -53,17 +67,26 @@ export function BinaryTreeProvider<T,>({ children, initialData }: BinaryTreeProv
 
     const clearTree = useCallback(() => {
         tree.root = null;
-        setOrderedNodes([...tree.inOrder()])
+        setMin(null);
+        setMax(null);
+        setIsBalanced(tree.isBalanced());
+        setOrderedNodes([...tree.inOrder()]);
     }, []);
 
     const selectNode = useCallback((node: TreeNode<T>) => {
-        const val = selectedNode !== node ? node : undefined
+        const val = selectedNode !== node ? node : undefined;
         setSelectedNode(val);
     }, [selectedNode]);
 
     useEffect(() => {
-        tree.addMultiple(initialData).calculateNodeX();
-        setOrderedNodes([...tree.inOrder()])
+        tree.addMultiple(initialData);
+
+        tree.calculateNodeY();
+        tree.calculateNodeX();
+        setMin(tree.findMin());
+        setMax(tree.findMax());
+        setIsBalanced(tree.isBalanced());
+        setOrderedNodes([...tree.inOrder()]);
     }, []);
 
     const TreeContext = Context as React.Context<BinaryTreeContext<T>>;
@@ -72,6 +95,9 @@ export function BinaryTreeProvider<T,>({ children, initialData }: BinaryTreeProv
         tree,
         orderedTreeNodes: orderedNodes,
         selectedNode,
+        isBalanced,
+        min,
+        max,
         addNode,
         clearTree,
         removeSelectedNode,
