@@ -1,20 +1,163 @@
-
-
-import BinaryTreeForm from "~/components/binary-tree/editor-form";
-import BinaryTreeSVGViewer from "~/components/binary-tree/svg-viewer";
-import { BinaryTreeProvider } from "~/context/BinaryTreeContext";
+import React, { useState } from 'react';
+import BinaryTreeForm from '~/components/binary-tree/editor-form';
+import BinaryTreeSVGViewer from '~/components/binary-tree/svg-viewer';
+import { BinaryTreeProvider } from '~/context/BinaryTreeContext';
 
 export const BST_ROUTE = 'binary-search-tree';
 
+/**
+ *
+ */
 export default function BST() {
-  const initialTreeData = [20, 18, 21, 9, 15, 5, 6, 3, 4, 2, 1, 19, 22];
+  // Predefined tree patterns
+  const treePatterns = {
+    random: 'Random',
+    balanced: 'Balanced (Perfect)',
+    unbalanced: 'Unbalanced (Skewed)',
+    zigzag: 'Zigzag Pattern',
+  };
+
+  // Generate a random array of integers for the initial tree data
+  const generateRandomTreeData = () => {
+    // Random length between 10 and 20
+    const length = Math.floor(Math.random() * 11) + 10; // 10 to 20
+    const data: number[] = [];
+
+    // Generate random integers between 1 and 100
+    for (let i = 0; i < length; i++) {
+      const randomValue = Math.floor(Math.random() * 100) + 1;
+      // Ensure no duplicates (BST doesn't handle duplicates well)
+      if (!data.includes(randomValue)) {
+        data.push(randomValue);
+      } else {
+        i--; // Try again to get a unique value
+      }
+    }
+
+    return {
+      type: 'random',
+      title: 'Random Tree',
+      values: data,
+      length: data.length,
+      min: Math.min(...data),
+      max: Math.max(...data),
+    };
+  };
+
+  const generateBalancedTree = () => {
+    // Generate a perfect binary tree (balanced at all levels)
+    // For example: [50, 25, 75, 15, 35, 65, 85, 10, 20, 30, 40, 60, 70, 80, 90]
+    const values = [50, 25, 75, 15, 35, 65, 85, 10, 20, 30, 40, 60, 70, 80, 90];
+
+    return {
+      type: 'balanced',
+      title: 'Balanced Tree (Perfect)',
+      values,
+      length: values.length,
+      min: Math.min(...values),
+      max: Math.max(...values),
+    };
+  };
+
+  const generateUnbalancedTree = () => {
+    // Generate a right-skewed tree
+    // Each node has only right children, creating maximum height
+    const values = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+    return {
+      type: 'unbalanced',
+      title: 'Unbalanced Tree (Right-Skewed)',
+      values,
+      length: values.length,
+      min: Math.min(...values),
+      max: Math.max(...values),
+    };
+  };
+
+  const generateZigzagTree = () => {
+    // Generate a zigzag pattern tree
+    // Alternating between left and right children
+    const values = [50, 25, 75, 30, 70, 35, 65, 40, 60, 45, 55];
+
+    return {
+      type: 'zigzag',
+      title: 'Zigzag Pattern Tree',
+      values,
+      length: values.length,
+      min: Math.min(...values),
+      max: Math.max(...values),
+    };
+  };
+
+  const getTreeDataByPattern = (pattern: string) => {
+    switch (pattern) {
+      case 'balanced':
+        return generateBalancedTree();
+      case 'unbalanced':
+        return generateUnbalancedTree();
+      case 'zigzag':
+        return generateZigzagTree();
+      case 'random':
+      default:
+        return generateRandomTreeData();
+    }
+  };
+
+  const [treeData, setTreeData] = useState(() => generateRandomTreeData());
+  const [pattern, setPattern] = useState('random');
+  const initialTreeData = treeData.values;
+
+  const handlePatternChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newPattern = e.target.value;
+    setPattern(newPattern);
+    setTreeData(getTreeDataByPattern(newPattern));
+  };
+
+  const handleRefreshTree = () => {
+    setTreeData(getTreeDataByPattern(pattern));
+  };
 
   return (
-    <BinaryTreeProvider<number> initialData={initialTreeData}>
-      <div className="flex items-center justify-center dark:bg-neutral-400 border-0 rounded-2xl p-3">
-        <BinaryTreeSVGViewer<number> />
-        <BinaryTreeForm<number> />
+    <div>
+      <div className="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-sm">
+            <strong>{treeData.title}:</strong> {treeData.length} nodes, ranging from {treeData.min}{' '}
+            to {treeData.max}
+          </p>
+          <button
+            onClick={handleRefreshTree}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-3 rounded text-sm"
+          >
+            Regenerate
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="pattern-select" className="text-sm font-medium">
+            Tree Pattern:
+          </label>
+          <select
+            id="pattern-select"
+            value={pattern}
+            onChange={handlePatternChange}
+            className="text-sm border rounded py-1 px-2 bg-white dark:bg-gray-800"
+          >
+            {Object.entries(treePatterns).map(([key, label]) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-    </BinaryTreeProvider>
+
+      <BinaryTreeProvider<number> initialData={initialTreeData}>
+        <div className="flex items-center justify-center dark:bg-neutral-400 border-0 rounded-2xl p-3">
+          <BinaryTreeSVGViewer<number> />
+          <BinaryTreeForm<number> />
+        </div>
+      </BinaryTreeProvider>
+    </div>
   );
 }

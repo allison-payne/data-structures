@@ -1,3 +1,3 @@
-import { TreeNodeSVG } from "./tree-node";
+import { TreeNodeSVG } from './tree-node';
 
 export default TreeNodeSVG;

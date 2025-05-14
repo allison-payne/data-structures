@@ -1,0 +1,59 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jsdoc/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint", "prettier", "jsdoc"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "jsdoc/require-jsdoc": [
+      "warn",
+      {
+        "publicOnly": false,
+        "require": {
+          "ArrowFunctionExpression": false,
+          "ClassDeclaration": true,
+          "ClassExpression": true,
+          "FunctionDeclaration": true,
+          "FunctionExpression": false,
+          "MethodDefinition": true
+        }
+      }
+    ],
+    "jsdoc/require-param": "warn",
+    "jsdoc/require-param-description": "warn",
+    "jsdoc/require-returns": "warn",
+    "jsdoc/require-returns-description": "warn",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "prettier/prettier": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "eqeqeq": ["error", "always"]
+  },
+  "ignorePatterns": ["node_modules/", "build/", "dist/", "*.config.js"]
+}

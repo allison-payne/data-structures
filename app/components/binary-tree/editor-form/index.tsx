@@ -1,3 +1,3 @@
-import { BinaryTreeForm } from "./editor-form";
+import { BinaryTreeForm } from './editor-form';
 
 export default BinaryTreeForm;

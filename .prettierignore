@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+build/
+dist/
+coverage/
+
+# Configuration files
+*.config.js
+*.lock
+*.log
+.eslintrc
+
+# Other files
+README.md
+LICENSE
