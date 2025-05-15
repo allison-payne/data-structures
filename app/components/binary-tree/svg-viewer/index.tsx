@@ -1,3 +1,3 @@
-import { BinaryTreeSVGViewer } from './svg-viewer';
+import { BinaryTreeVisualizationAdapter } from './binary-tree-visualization-adapter';
 
-export default BinaryTreeSVGViewer;
+export default BinaryTreeVisualizationAdapter;

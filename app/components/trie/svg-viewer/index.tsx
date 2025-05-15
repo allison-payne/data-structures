@@ -1,3 +1,3 @@
-import { TrieSVGViewer } from './svg-viewer';
+import { TrieVisualizationAdapter } from './trie-visualization-adapter';
 
-export default TrieSVGViewer;
+export default TrieVisualizationAdapter;

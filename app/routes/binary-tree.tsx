@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BinaryTreeForm from '~/components/binary-tree/editor-form';
-import BinaryTreeSVGViewer from '~/components/binary-tree/svg-viewer';
+import BinaryTreeVisualizationAdapter from '~/components/binary-tree/svg-viewer';
 import { BinaryTreeProvider } from '~/context/BinaryTreeContext';
 
 export const BST_ROUTE = 'binary-search-tree';
@@ -157,7 +157,8 @@ export default function BST() {
       <BinaryTreeProvider<number> initialData={initialTreeData}>
         <div className="flex flex-col lg:flex-row items-start justify-center gap-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
           <div className="flex-shrink-0 w-full lg:w-1/2 lg:min-w-0 overflow-hidden">
-            <BinaryTreeSVGViewer<number> />
+            {/* Using the new generic visualization adapter */}
+            <BinaryTreeVisualizationAdapter<number> />
           </div>
           <div className="w-full lg:w-1/2 lg:min-w-0">
             <BinaryTreeForm<number> />
