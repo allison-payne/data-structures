@@ -136,7 +136,12 @@ const SVG = ({
         value={value}
         onChangeValue={setValueHandler}
         scaleFactorOnWheel={1.1}
-        miniatureProps={{ position: 'none' }}
+        miniatureProps={{
+          position: 'none',
+          background: background,
+          width: 100,
+          height: 80,
+        }}
         toolbarProps={{ position: 'none' }}
         className="transition-colors duration-200"
       >

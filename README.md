@@ -8,7 +8,7 @@ Data Structures 101 offers a dynamic and engaging way to explore fundamental com
 
 ### Binary Search Tree (BST)
 
-![Binary Search Tree Visualization](https://raw.githubusercontent.com/username/data-structures/main/docs/screenshots/bst-preview.png)
+![Binary Search Tree Visualization](bst.png)
 
 - **Interactive Tree Visualization**: Click on nodes to select them for operations
 - **Algorithm Animations**:
@@ -27,7 +27,7 @@ Data Structures 101 offers a dynamic and engaging way to explore fundamental com
 
 ### Trie
 
-![Trie Visualization](https://raw.githubusercontent.com/username/data-structures/main/docs/screenshots/trie-preview.png)
+![Trie Visualization](trie.png)
 
 - **Word Visualization**: See how words are stored in a prefix tree structure
 - **Interactive Operations**: Add and search for words in the trie

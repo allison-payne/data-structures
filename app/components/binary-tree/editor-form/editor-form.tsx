@@ -75,25 +75,39 @@ export function BinaryTreeForm<T>() {
   return (
     <div className="min-h-[600px] border-l-2 p-2 pl-4">
       <div>
-        <label className="block" htmlFor="nodeValue">
+        <label
+          className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+          htmlFor="nodeValue"
+        >
           Add Node
         </label>
-        <div className="p-1 text-2xl w-full max-w-[400px] relative">
+        <div className="relative w-full max-w-[400px]">
           <input
-            className="bg-white dark:bg-gray-800 text-black dark:text-white border-2 border-gray-300 dark:border-gray-600 rounded-l-lg p-2 pl-4 w-[85%]"
+            className="block w-full p-3 pr-16 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             type="number"
             id="nodeValue"
             defaultValue={25}
             ref={addNodeInputRef}
           />
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold border-0 dark:border-gray-600 rounded-r-lg h-[42px] w-[15%] absolute top-[1px] right-0 transition-colors"
+            className="absolute right-0 top-0 h-full px-4 font-medium text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-r-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
             type="button"
             id="addNode"
             onClick={handleAddNode}
             aria-label="Add node"
           >
-            +
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
           </button>
         </div>
       </div>
