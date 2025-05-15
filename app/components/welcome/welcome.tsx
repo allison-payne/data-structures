@@ -8,7 +8,7 @@ export function Welcome() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 min-h-0">
       <div className="max-w-[1200px] w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
-        <div className="p-8 space-y-6">
+        <div className="p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6">
           <div className="flex items-center justify-center mb-6">
             <div className="bg-blue-500 dark:bg-blue-600 w-14 h-14 rounded-full flex items-center justify-center shadow-lg">
               <svg

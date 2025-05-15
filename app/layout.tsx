@@ -12,7 +12,7 @@ const Layout = () => {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-200 ${theme === 'dark' ? 'dark' : ''}`}
+      className={`min-h-screen transition-colors duration-200 text-gray-900 dark:text-gray-100 ${theme === 'dark' ? 'dark' : ''}`}
     >
       <Header />
       <main className="flex items-center justify-center pt-16 pb-4 px-4">
@@ -21,9 +21,7 @@ const Layout = () => {
         </div>
       </main>
       <footer className="text-center py-4 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800">
-        <p>
-          Data Structures 101 &copy; {new Date().getFullYear()} | Theme: {theme}
-        </p>
+        <p>Data Structures 101 &copy; {new Date().getFullYear()}</p>
       </footer>
     </div>
   );

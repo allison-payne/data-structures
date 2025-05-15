@@ -50,30 +50,32 @@ export function TrieSVGViewer(): React.JSX.Element {
   const { nodes, edges } = collectNodesAndEdges();
 
   return (
-    <div className="w-[600px]">
-      <SVG>
-        {/* Render edges first so they are behind the nodes */}
-        {edges.map((edge, index) => (
-          <TrieEdge
-            key={`edge-${index}`}
-            x1={getScaledCoords(edge.source.coordinates.x)}
-            y1={getScaledCoords(edge.source.coordinates.y)}
-            x2={getScaledCoords(edge.target.coordinates.x)}
-            y2={getScaledCoords(edge.target.coordinates.y)}
-            character={edge.char}
-          />
-        ))}
+    <div className="w-full flex items-center justify-center">
+      <div className="relative w-full aspect-square max-w-[600px]">
+        <SVG className="w-full">
+          {/* Render edges first so they are behind the nodes */}
+          {edges.map((edge, index) => (
+            <TrieEdge
+              key={`edge-${index}`}
+              x1={getScaledCoords(edge.source.coordinates.x)}
+              y1={getScaledCoords(edge.source.coordinates.y)}
+              x2={getScaledCoords(edge.target.coordinates.x)}
+              y2={getScaledCoords(edge.target.coordinates.y)}
+              character={edge.char}
+            />
+          ))}
 
-        {/* Render nodes */}
-        {nodes.map((node, index) => (
-          <TrieNodeSVG
-            key={`node-${index}`}
-            node={node}
-            selectedNode={selectedNode}
-            onClick={selectNode}
-          />
-        ))}
-      </SVG>
+          {/* Render nodes */}
+          {nodes.map((node, index) => (
+            <TrieNodeSVG
+              key={`node-${index}`}
+              node={node}
+              selectedNode={selectedNode}
+              onClick={selectNode}
+            />
+          ))}
+        </SVG>
+      </div>
     </div>
   );
 }

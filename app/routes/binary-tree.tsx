@@ -121,15 +121,15 @@ export default function BST() {
 
   return (
     <div>
-      <div className="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-        <div className="flex items-center justify-between mb-2">
+      <div className="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-800 dark:text-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
           <p className="text-sm">
             <strong>{treeData.title}:</strong> {treeData.length} nodes, ranging from {treeData.min}{' '}
             to {treeData.max}
           </p>
           <button
             onClick={handleRefreshTree}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-3 rounded text-sm"
+            className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-1 px-3 rounded text-sm"
           >
             Regenerate
           </button>
@@ -143,10 +143,10 @@ export default function BST() {
             id="pattern-select"
             value={pattern}
             onChange={handlePatternChange}
-            className="text-sm border rounded py-1 px-2 bg-white dark:bg-gray-800"
+            className="text-sm border border-gray-300 dark:border-gray-600 rounded py-1 px-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           >
             {Object.entries(treePatterns).map(([key, label]) => (
-              <option key={key} value={key}>
+              <option key={key} value={key} className="dark:bg-gray-800">
                 {label}
               </option>
             ))}
@@ -155,11 +155,11 @@ export default function BST() {
       </div>
 
       <BinaryTreeProvider<number> initialData={initialTreeData}>
-        <div className="flex flex-col md:flex-row items-start justify-center bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
-          <div className="flex-shrink-0 w-full md:w-auto md:mr-4 mb-4 md:mb-0">
+        <div className="flex flex-col lg:flex-row items-start justify-center gap-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
+          <div className="flex-shrink-0 w-full lg:w-1/2 lg:min-w-0 overflow-hidden">
             <BinaryTreeSVGViewer<number> />
           </div>
-          <div className="flex-grow max-w-full md:max-w-md">
+          <div className="w-full lg:w-1/2 lg:min-w-0">
             <BinaryTreeForm<number> />
           </div>
         </div>

@@ -42,9 +42,9 @@ export function BinaryTreeSVGViewer<T>(): React.ReactElement {
   };
 
   return (
-    <div className="w-[600px] h-[600px] flex items-center justify-center">
-      <div className="relative w-full h-full">
-        <SVG>
+    <div className="w-full max-w-full flex items-center justify-center">
+      <div className="relative w-full aspect-square">
+        <SVG className="w-full max-w-[600px] mx-auto">
           {orderedTreeNodes?.map((node, index) => {
             return (
               <React.Fragment key={`branch-${index}`}>
@@ -55,6 +55,7 @@ export function BinaryTreeSVGViewer<T>(): React.ReactElement {
                     y1={getScaledCoords(node.coordinates.y)}
                     x2={getScaledCoords(node.left.coordinates.x)}
                     y2={getScaledCoords(node.left.coordinates.y)}
+                    highlighted={isNodeHighlighted(node.left)}
                   />
                 )}
                 {node.right && (
@@ -64,6 +65,7 @@ export function BinaryTreeSVGViewer<T>(): React.ReactElement {
                     y1={getScaledCoords(node.coordinates.y)}
                     x2={getScaledCoords(node.right.coordinates.x)}
                     y2={getScaledCoords(node.right.coordinates.y)}
+                    highlighted={isNodeHighlighted(node.right)}
                   />
                 )}
               </React.Fragment>

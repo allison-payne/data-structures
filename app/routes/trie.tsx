@@ -14,11 +14,11 @@ export default function Trie() {
 
   return (
     <TrieProvider initialWords={initialWords}>
-      <div className="flex flex-col md:flex-row items-start justify-center bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
-        <div className="flex-shrink-0 w-full md:w-auto md:mr-4 mb-4 md:mb-0">
+      <div className="flex flex-col lg:flex-row items-start justify-center gap-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
+        <div className="flex-shrink-0 w-full lg:w-1/2 lg:min-w-0 overflow-hidden">
           <TrieSVGViewer />
         </div>
-        <div className="flex-grow max-w-full md:max-w-md">
+        <div className="w-full lg:w-1/2 lg:min-w-0">
           <TrieEditorForm />
         </div>
       </div>
