@@ -73,7 +73,7 @@ export function BinaryTreeForm<T>() {
   );
 
   return (
-    <div className="h-[600px] border-l-2 p-2 pl-4">
+    <div className="min-h-[600px] border-l-2 p-2 pl-4">
       <div>
         <label className="block" htmlFor="nodeValue">
           Add Node
@@ -126,8 +126,36 @@ export function BinaryTreeForm<T>() {
         Balance Tree
       </button>
 
+      {/* Tree Statistics */}
+      <div
+        id="stats"
+        className="mt-4 mb-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+      >
+        <h3 className="text-sm font-bold mb-2">Tree Statistics</h3>
+        <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold">Balance Status</span>
+            <span className={`text-sm ${isBalanced ? 'text-green-600' : 'text-red-600'}`}>
+              {isBalanced ? 'Balanced' : 'Unbalanced'}
+            </span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold">Minimum Value</span>
+            <span className="text-sm">
+              {min?.data !== undefined ? (min?.data as number) : 'N/A'}
+            </span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold">Maximum Value</span>
+            <span className="text-sm">
+              {max?.data !== undefined ? (max?.data as number) : 'N/A'}
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Algorithm Visualization Controls */}
-      <div className="mt-6 border-t-2 pt-4">
+      <div className="mt-4 border-t-2 pt-4">
         <h3 className="text-lg font-bold mb-3">Algorithm Visualization</h3>
 
         <AlgorithmSelector
@@ -155,21 +183,6 @@ export function BinaryTreeForm<T>() {
         />
 
         <AlgorithmExplanation algorithm={currentAlgorithm} />
-      </div>
-
-      <div className="mt-6 border-t-2 pt-4">
-        <div className="pt-2 pb-2">
-          <span className="block font-bold">Is it Balanced?</span>
-          <span className="block">{isBalanced ? 'Yes' : 'No'}</span>
-        </div>
-        <div className="pt-2 pb-2">
-          <span className="block font-bold">Minimum</span>
-          <span className="block">{min?.data as number}</span>
-        </div>
-        <div className="pt-2 pb-2">
-          <span className="block font-bold">Maximum</span>
-          <span className="block">{max?.data as number}</span>
-        </div>
       </div>
     </div>
   );
