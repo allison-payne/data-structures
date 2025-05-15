@@ -1,12 +1,38 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-/* @theme {} */
-
+/* Base theme styles */
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white text-gray-900 transition-colors duration-200;
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+/* Dark mode styles */
+html.dark,
+html.dark body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Improved focus styles for accessibility */
+:focus-visible {
+  @apply outline-2 outline-blue-500;
+}
+
+/* Smooth transitions for theme changes */
+.transition-theme {
+  @apply transition-all duration-300 ease-in-out;
 }

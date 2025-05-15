@@ -3,8 +3,10 @@ import { Route, Routes } from 'react-router';
 import Layout from './layout';
 import BST, { BST_ROUTE } from './routes/binary-tree';
 import Home from './routes/home';
+import { ThemeProvider } from './context/ThemeContext';
 
 import './app.css';
+import './theme/theme.css';
 import Trie, { TRIE_ROUTE } from './routes/trie';
 
 /**
@@ -13,13 +15,15 @@ import Trie, { TRIE_ROUTE } from './routes/trie';
  */
 function App() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path={BST_ROUTE} element={<BST />} />
-        <Route path={TRIE_ROUTE} element={<Trie />} />
-      </Route>
-    </Routes>
+    <ThemeProvider>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path={BST_ROUTE} element={<BST />} />
+          <Route path={TRIE_ROUTE} element={<Trie />} />
+        </Route>
+      </Routes>
+    </ThemeProvider>
   );
 }
 

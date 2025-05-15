@@ -1,0 +1,50 @@
+/* Theme styles */
+:root {
+  --background: white;
+  --text: #111827;
+  --border: #e5e7eb;
+  --node-fill: white;
+  --node-stroke: #333;
+  --node-selected: #ff5555;
+  --node-highlighted: #ffcc00;
+  --edge: #555555;
+  --edge-highlighted: #ff8800;
+  --edge-text: #444444;
+}
+
+html.dark {
+  --background: #111827;
+  --text: #f3f4f6;
+  --border: #374151;
+  --node-fill: #1a1a1a;
+  --node-stroke: #cccccc;
+  --node-selected: #ff7777;
+  --node-highlighted: #ffdd44;
+  --edge: #aaaaaa;
+  --edge-highlighted: #ff9933;
+  --edge-text: #eeeeee;
+}
+
+/* Base theme styles */
+body {
+  background-color: var(--background);
+  color: var(--text);
+  transition:
+    background-color 200ms,
+    color 200ms;
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

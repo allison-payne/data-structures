@@ -25,14 +25,17 @@ export function TrieEdge({ x1, y1, x2, y2, character }: TrieEdgeProps) {
 
   return (
     <>
-      <line stroke="white" strokeWidth={0.5} x1={x1} y1={y1} x2={x2} y2={y2} />
+      <line stroke="var(--edge, #aaaaaa)" strokeWidth={0.5} x1={x1} y1={y1} x2={x2} y2={y2} />
       <text
         x={midX}
         y={midY}
         textAnchor="middle"
         dominantBaseline="middle"
-        fill="white"
-        style={{ fontSize: '3.5px' }}
+        fill="var(--edge-text, #eeeeee)"
+        style={{
+          fontSize: '3.5px',
+          fontWeight: 'normal',
+        }}
       >
         {character}
       </text>

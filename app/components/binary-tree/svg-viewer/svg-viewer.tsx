@@ -42,44 +42,46 @@ export function BinaryTreeSVGViewer<T>(): React.ReactElement {
   };
 
   return (
-    <div className="w-[600px]">
-      <SVG>
-        {orderedTreeNodes?.map((node, index) => {
-          return (
-            <React.Fragment key={`branch-${index}`}>
-              {node.left && (
-                <TreeBranch
-                  key={`branch-${index}-left`}
-                  x1={getScaledCoords(node.coordinates.x)}
-                  y1={getScaledCoords(node.coordinates.y)}
-                  x2={getScaledCoords(node.left.coordinates.x)}
-                  y2={getScaledCoords(node.left.coordinates.y)}
-                />
-              )}
-              {node.right && (
-                <TreeBranch
-                  key={`branch-${index}-right`}
-                  x1={getScaledCoords(node.coordinates.x)}
-                  y1={getScaledCoords(node.coordinates.y)}
-                  x2={getScaledCoords(node.right.coordinates.x)}
-                  y2={getScaledCoords(node.right.coordinates.y)}
-                />
-              )}
-            </React.Fragment>
-          );
-        })}
-        {orderedTreeNodes?.map((node, index) => {
-          return (
-            <TreeNodeSVG<T>
-              node={node}
-              key={`node-${index}`}
-              selectedNode={selectedNode}
-              onClick={selectNode}
-              highlighted={isNodeHighlighted(node)}
-            />
-          );
-        })}
-      </SVG>
+    <div className="w-[600px] h-[600px] flex items-center justify-center">
+      <div className="relative w-full h-full">
+        <SVG>
+          {orderedTreeNodes?.map((node, index) => {
+            return (
+              <React.Fragment key={`branch-${index}`}>
+                {node.left && (
+                  <TreeBranch
+                    key={`branch-${index}-left`}
+                    x1={getScaledCoords(node.coordinates.x)}
+                    y1={getScaledCoords(node.coordinates.y)}
+                    x2={getScaledCoords(node.left.coordinates.x)}
+                    y2={getScaledCoords(node.left.coordinates.y)}
+                  />
+                )}
+                {node.right && (
+                  <TreeBranch
+                    key={`branch-${index}-right`}
+                    x1={getScaledCoords(node.coordinates.x)}
+                    y1={getScaledCoords(node.coordinates.y)}
+                    x2={getScaledCoords(node.right.coordinates.x)}
+                    y2={getScaledCoords(node.right.coordinates.y)}
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
+          {orderedTreeNodes?.map((node, index) => {
+            return (
+              <TreeNodeSVG<T>
+                node={node}
+                key={`node-${index}`}
+                selectedNode={selectedNode}
+                onClick={selectNode}
+                highlighted={isNodeHighlighted(node)}
+              />
+            );
+          })}
+        </SVG>
+      </div>
     </div>
   );
 }

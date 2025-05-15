@@ -75,29 +75,78 @@ export function AlgorithmStatus({
 
   if (algorithm === 'none') {
     return (
-      <div className="mt-4 p-3 bg-gray-100 rounded-lg dark:bg-gray-700 text-center">
-        <p>Select an algorithm to visualize</p>
+      <div className="mt-5 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm text-center">
+        <div className="flex flex-col items-center justify-center text-gray-600 dark:text-gray-300">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 mb-2 opacity-70"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+            />
+          </svg>
+          <p className="text-sm font-medium">Select an algorithm to begin visualization</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="mt-4 p-3 bg-gray-100 rounded-lg dark:bg-gray-700">
-      <div className="text-sm font-semibold mb-2">{getAlgorithmDisplayName(algorithm)}</div>
-      <div className="flex justify-between text-xs mb-1">
-        <span>
+    <div className="mt-5 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="flex items-center mb-3 text-gray-800 dark:text-gray-200">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 mr-1"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M4 5a2 2 0 012-2h8a2 2 0 012 2v14l-6-3-6 3V5z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <span className="text-sm font-semibold">{getAlgorithmDisplayName(algorithm)}</span>
+      </div>
+
+      <div className="flex justify-between text-xs mb-1.5 text-gray-600 dark:text-gray-400">
+        <span className="font-medium">
           Step {currentStep} of {totalSteps}
         </span>
-        <span>{Math.round((currentStep / totalSteps) * 100)}%</span>
+        <span className="font-medium">
+          {Math.round((currentStep / totalSteps) * 100)}% complete
+        </span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-600">
+
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-3">
         <div
-          className="bg-blue-600 h-2.5 rounded-full"
+          className="bg-blue-500 dark:bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-in-out"
           style={{ width: `${(currentStep / totalSteps) * 100}%` }}
         ></div>
       </div>
-      <div className="mt-2 text-sm">
-        <strong>Current action:</strong> {stepDescription}
+
+      <div className="mt-3 p-2.5 bg-gray-50 dark:bg-gray-700/50 rounded text-sm text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-gray-600">
+        <div className="flex items-start">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-1.5 mt-0.5 text-blue-500 dark:text-blue-400"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span>{stepDescription}</span>
+        </div>
       </div>
     </div>
   );

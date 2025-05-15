@@ -14,9 +14,13 @@ export default function Trie() {
 
   return (
     <TrieProvider initialWords={initialWords}>
-      <div className="flex items-center justify-center dark:bg-neutral-400 border-0 rounded-2xl p-3">
-        <TrieSVGViewer />
-        <TrieEditorForm />
+      <div className="flex flex-col md:flex-row items-start justify-center bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
+        <div className="flex-shrink-0 w-full md:w-auto md:mr-4 mb-4 md:mb-0">
+          <TrieSVGViewer />
+        </div>
+        <div className="flex-grow max-w-full md:max-w-md">
+          <TrieEditorForm />
+        </div>
       </div>
     </TrieProvider>
   );

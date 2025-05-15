@@ -38,21 +38,44 @@ export function TrieNodeSVG({ node, selectedNode, onClick }: TrieNodeSVGProps) {
 
   return (
     <g className="cursor-pointer" onClick={handleNodeClick}>
+      {/* Background highlight effect for better visibility */}
+      {(selected || isEndOfWord) && (
+        <circle
+          fill={selected ? 'var(--node-selected, #ff5555)' : 'var(--node-highlighted, #ffcc00)'}
+          opacity={0.3}
+          r={NODE_RADIUS + 1.2}
+          cx={xPos}
+          cy={yPos}
+          className={isEndOfWord ? 'animate-pulse' : ''}
+        />
+      )}
+      {/* Main circle */}
       <circle
-        fill={selected ? 'red' : isEndOfWord ? 'gold' : 'white'}
+        fill={
+          selected
+            ? 'var(--node-selected, #ff5555)'
+            : isEndOfWord
+              ? 'var(--node-highlighted, gold)'
+              : 'var(--node-fill, white)'
+        }
         r={NODE_RADIUS}
         cx={xPos}
         cy={yPos}
-        stroke={isEndOfWord ? '#FF8800' : 'grey'}
+        stroke={isEndOfWord ? 'var(--edge-highlighted, #FF8800)' : 'var(--node-stroke, grey)'}
         strokeWidth={isEndOfWord ? 0.5 : 0.2}
       />
+      {/* Text label */}
       <text
         x={xPos}
         y={yPos}
         textAnchor="middle"
-        style={{ fontSize: '4px', userSelect: 'none' }}
+        style={{
+          fontSize: '4px',
+          userSelect: 'none',
+          fontWeight: selected || isEndOfWord ? 'bold' : 'normal',
+        }}
         dy={'1.5px'}
-        fill={selected ? 'white' : 'black'}
+        fill={selected || isEndOfWord ? 'var(--text, black)' : 'var(--text, black)'}
       >
         {character || 'R'}
       </text>

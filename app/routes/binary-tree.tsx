@@ -7,6 +7,7 @@ export const BST_ROUTE = 'binary-search-tree';
 
 /**
  * Binary Search Tree route component for visualizing binary search tree operations
+ * Provides an interactive interface for learning tree operations and algorithms
  * @returns {React.Element} The rendered Binary Search Tree page
  */
 export default function BST() {
@@ -154,9 +155,13 @@ export default function BST() {
       </div>
 
       <BinaryTreeProvider<number> initialData={initialTreeData}>
-        <div className="flex items-center justify-center dark:bg-neutral-400 border-0 rounded-2xl p-3">
-          <BinaryTreeSVGViewer<number> />
-          <BinaryTreeForm<number> />
+        <div className="flex flex-col md:flex-row items-start justify-center bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm">
+          <div className="flex-shrink-0 w-full md:w-auto md:mr-4 mb-4 md:mb-0">
+            <BinaryTreeSVGViewer<number> />
+          </div>
+          <div className="flex-grow max-w-full md:max-w-md">
+            <BinaryTreeForm<number> />
+          </div>
         </div>
       </BinaryTreeProvider>
     </div>

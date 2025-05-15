@@ -819,12 +819,26 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
     tree.calculateNodeY();
     tree.calculateNodeX();
 
+    // Reset selected node to avoid referencing a node that no longer exists
+    setSelectedNode(undefined);
+
     // Update state
     setMin(tree.findMin());
     setMax(tree.findMax());
     setIsBalanced(tree.isBalanced());
-    setOrderedNodes([...tree.inOrder()]);
-  }, [tree]);
+
+    // Create a fresh copy of the ordered nodes to ensure React detects the change
+    const freshOrderedNodes = [...tree.inOrder()];
+    setOrderedNodes(freshOrderedNodes);
+
+    // If we're visualizing the balancing algorithm, prepare the steps
+    if (currentAlgorithm === 'balancing') {
+      const balancingSteps = generateAlgorithmSteps('balancing');
+      setAlgorithmSteps(balancingSteps);
+      setCurrentStep(0);
+      setTotalSteps(balancingSteps.length);
+    }
+  }, [tree, currentAlgorithm, setAlgorithmSteps, generateAlgorithmSteps]);
 
   const TreeContext = Context as React.Context<BinaryTreeContext<T>>;
   const contextValue: BinaryTreeContext<T> = {

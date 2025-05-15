@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import type { TreeNode } from '~/structures/binary-tree/TreeNode';
 import { initialViewBox } from '../constants';
 
-const NODE_RADIUS = 3;
+// Increased node radius for better visibility
+const NODE_RADIUS = 3.5;
 
 export type TreeNodeSVGProps<T> = {
   node: TreeNode<T>;
@@ -45,24 +46,54 @@ export function TreeNodeSVG<T>({
     setSelected(selectedNode === node);
   }, [selectedNode, node]);
 
-  // Determine fill color based on selected and highlighted states
-  const getFillColor = () => {
-    if (highlighted) return '#ffcc00'; // Yellow for highlighted during algorithm
-    if (selected) return 'red'; // Red for selected
-    return 'white'; // Default white
-  };
-
   return (
     <g className="cursor-pointer" onClick={handleNodeClick}>
+      {/* Background highlight effect for better visibility */}
+      {(highlighted || selected) && (
+        <circle
+          fill={highlighted ? 'var(--node-highlighted, #ffcc00)' : 'var(--node-selected, #ff5555)'}
+          opacity={0.3}
+          r={NODE_RADIUS + 1.5}
+          cx={xPos}
+          cy={yPos}
+          className={highlighted ? 'animate-pulse' : ''}
+        />
+      )}
+      {/* Main circle */}
       <circle
-        fill={getFillColor()}
+        fill={
+          highlighted
+            ? 'var(--node-highlighted, #ffcc00)'
+            : selected
+              ? 'var(--node-selected, #ff5555)'
+              : 'var(--node-fill, white)'
+        }
+        stroke={
+          selected
+            ? 'var(--text, black)'
+            : highlighted
+              ? 'var(--edge-highlighted, #ff8800)'
+              : 'var(--node-stroke, #333)'
+        }
+        strokeWidth={0.5}
         r={NODE_RADIUS}
         cx={xPos}
         cy={yPos}
         // Add a subtle animation when highlighted
         className={highlighted ? 'animate-pulse' : ''}
       />
-      <text x={xPos} y={yPos} textAnchor="middle" style={{ fontSize: '4px' }} dy={'1.5px'}>
+      {/* Node text */}
+      <text
+        x={xPos}
+        y={yPos}
+        textAnchor="middle"
+        style={{
+          fontSize: '4px',
+          fontWeight: selected || highlighted ? 'bold' : 'normal',
+          fill: selected || highlighted ? 'var(--text, black)' : 'var(--text, #333)',
+        }}
+        dy={'1.5px'}
+      >
         {text}
       </text>
     </g>
