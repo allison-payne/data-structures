@@ -21,8 +21,8 @@ export class BinaryTree<T> {
 
   /**
    * Adds a new value to the tree, maintaining binary search tree properties
-   * @param value The value to add to the tree
-   * @returns void or null if the value already exists in the tree
+   * @param {T} value The value to add to the tree
+   * @returns {void | null} void or null if the value already exists in the tree
    */
   add(value: T): void | null {
     const node = this.root;
@@ -55,8 +55,8 @@ export class BinaryTree<T> {
 
   /**
    * Adds multiple values to the tree at once
-   * @param data Array of values to add to the tree
-   * @returns The tree instance for method chaining
+   * @param {T[]} data Array of values to add to the tree
+   * @returns {BinaryTree<T>} The tree instance for method chaining
    */
   addMultiple(data: Array<T>): BinaryTree<T> {
     data.forEach(datum => this.add(datum));
@@ -65,8 +65,8 @@ export class BinaryTree<T> {
 
   /**
    * Finds the node with the minimum value in the specified subtree
-   * @param node Root node of the subtree to search, defaults to the tree's root
-   * @returns TreeNode containing the minimum value
+   * @param {TreeNode<T> | null} node Root node of the subtree to search, defaults to the tree's root
+   * @returns {TreeNode<T>} TreeNode containing the minimum value
    */
   findMin(node = this.root): TreeNode<T> {
     let current = node as TreeNode<T>;
@@ -78,8 +78,8 @@ export class BinaryTree<T> {
 
   /**
    * Finds the node with the maximum value in the specified subtree
-   * @param node Root node of the subtree to search, defaults to the tree's root
-   * @returns TreeNode containing the maximum value
+   * @param {TreeNode<T> | null} node Root node of the subtree to search, defaults to the tree's root
+   * @returns {TreeNode<T>} TreeNode containing the maximum value
    */
   findMax(node = this.root): TreeNode<T> {
     let current = node as TreeNode<T>;
@@ -91,8 +91,8 @@ export class BinaryTree<T> {
 
   /**
    * Finds a node with the specified value
-   * @param data The value to search for
-   * @returns The node containing the value, or null if not found
+   * @param {T} data The value to search for
+   * @returns {TreeNode<T> | null} The node containing the value, or null if not found
    */
   find(data: T): TreeNode<T> | null {
     let current: TreeNode<T> | null = this.root as TreeNode<T>;
@@ -111,8 +111,8 @@ export class BinaryTree<T> {
 
   /**
    * Checks if a value exists in the tree
-   * @param data The value to check for
-   * @returns true if the value exists in the tree, false otherwise
+   * @param {T} data The value to check for
+   * @returns {boolean} true if the value exists in the tree, false otherwise
    */
   isPresent(data: T): boolean {
     let current: TreeNode<T> | null = this.root;
@@ -131,8 +131,8 @@ export class BinaryTree<T> {
 
   /**
    * Removes a node with the specified value from the tree
-   * @param data The value to remove
-   * @returns null if the tree is empty or void
+   * @param {T} data The value to remove
+   * @returns {void} Updates the tree by removing the specified node
    */
   remove(data: T): null | void {
     const removeNode = (node: TreeNode<T> | null, data: T) => {
@@ -180,7 +180,7 @@ export class BinaryTree<T> {
   /**
    * Checks if the tree is balanced
    * A balanced tree has a difference between min and max height of at most 1
-   * @returns true if the tree is balanced, false otherwise
+   * @returns {boolean} true if the tree is balanced, false otherwise
    */
   isBalanced(): boolean {
     return this.findMinHeight() >= this.findMaxHeight() - 1;
@@ -189,8 +189,8 @@ export class BinaryTree<T> {
   /**
    * Finds the minimum height of the tree
    * The minimum height is the length of the shortest path from the root to any leaf
-   * @param node The root node of the subtree, defaults to the tree's root
-   * @returns The minimum height
+   * @param {TreeNode<T> | null} node The root node of the subtree, defaults to the tree's root
+   * @returns {number} The minimum height
    */
   findMinHeight(node = this.root): number {
     if (node === null) {
@@ -208,8 +208,8 @@ export class BinaryTree<T> {
   /**
    * Finds the maximum height of the tree
    * The maximum height is the length of the longest path from the root to any leaf
-   * @param node The root node of the subtree, defaults to the tree's root
-   * @returns The maximum height
+   * @param {TreeNode<T> | null} node The root node of the subtree, defaults to the tree's root
+   * @returns {number} The maximum height
    */
   findMaxHeight(node = this.root): number {
     if (node === null) {
@@ -228,7 +228,7 @@ export class BinaryTree<T> {
    * Performs an in-order traversal of the tree
    * In-order traversal visits left subtree, then root, then right subtree
    * For a binary search tree, this visits nodes in ascending order
-   * @returns Array of tree nodes in in-order sequence
+   * @returns {Array<TreeNode<T>>} Array of tree nodes in in-order sequence
    */
   inOrder(): Array<TreeNode<T>> {
     if (this.root === null) {
@@ -237,9 +237,13 @@ export class BinaryTree<T> {
       const result = Array<TreeNode<T>>();
 
       const traverseInOrder = (node: TreeNode<T>) => {
-        node.left && traverseInOrder(node.left);
+        if (node.left) {
+          traverseInOrder(node.left);
+        }
         result.push(node);
-        node.right && traverseInOrder(node.right);
+        if (node.right) {
+          traverseInOrder(node.right);
+        }
       };
 
       traverseInOrder(this.root);
@@ -250,7 +254,7 @@ export class BinaryTree<T> {
   /**
    * Performs a pre-order traversal of the tree
    * Pre-order traversal visits root, then left subtree, then right subtree
-   * @returns Array of tree nodes in pre-order sequence, or null if the tree is empty
+   * @returns {Array<TreeNode<T>> | null} Array of tree nodes in pre-order sequence, or null if the tree is empty
    */
   preOrder(): Array<TreeNode<T>> | null {
     if (this.root === null) {
@@ -259,8 +263,12 @@ export class BinaryTree<T> {
       const result = new Array<TreeNode<T>>();
       const traversePreOrder = (node: TreeNode<T>) => {
         result.push(node);
-        node.left && traversePreOrder(node.left);
-        node.right && traversePreOrder(node.right);
+        if (node.left) {
+          traversePreOrder(node.left);
+        }
+        if (node.right) {
+          traversePreOrder(node.right);
+        }
       };
       traversePreOrder(this.root);
       return result;
@@ -270,7 +278,7 @@ export class BinaryTree<T> {
   /**
    * Performs a post-order traversal of the tree
    * Post-order traversal visits left subtree, then right subtree, then root
-   * @returns Array of tree nodes in post-order sequence, or null if the tree is empty
+   * @returns {Array<TreeNode<T>> | null} Array of tree nodes in post-order sequence, or null if the tree is empty
    */
   postOrder(): Array<TreeNode<T>> | null {
     if (this.root === null) {
@@ -278,8 +286,12 @@ export class BinaryTree<T> {
     } else {
       const result = new Array<TreeNode<T>>();
       const traversePostOrder = (node: TreeNode<T>) => {
-        node.left && traversePostOrder(node.left);
-        node.right && traversePostOrder(node.right);
+        if (node.left) {
+          traversePostOrder(node.left);
+        }
+        if (node.right) {
+          traversePostOrder(node.right);
+        }
         result.push(node);
       };
       traversePostOrder(this.root);
@@ -290,7 +302,7 @@ export class BinaryTree<T> {
   /**
    * Performs a level-order (breadth-first) traversal of the tree
    * Level-order traversal visits nodes level by level, from top to bottom, left to right
-   * @returns Array of tree nodes in level-order sequence, or null if the tree is empty
+   * @returns {Array<TreeNode<T>> | null} Array of tree nodes in level-order sequence, or null if the tree is empty
    */
   levelOrder(): Array<TreeNode<T>> | null {
     const result = new Array<TreeNode<T>>();
@@ -299,7 +311,9 @@ export class BinaryTree<T> {
       Q.push(this.root);
       while (Q.length > 0) {
         const node = Q.shift();
-        node && result.push(node);
+        if (node) {
+          result.push(node);
+        }
         if (node && node.left !== null) {
           Q.push(node.left);
         }

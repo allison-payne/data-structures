@@ -1,6 +1,8 @@
+import React from 'react';
+
 /**
  * Welcome component that displays introductory information about the application
- * @returns JSX element containing the welcome message
+ * @returns {React.Element} JSX element containing the welcome message
  */
 export function Welcome() {
   return (

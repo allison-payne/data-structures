@@ -7,7 +7,9 @@ import TrieEdge from '../trie-edge';
 import TrieNodeSVG from '../trie-node';
 
 /**
- *
+ * Component that renders the visual representation of the trie data structure
+ * Displays nodes and edges with proper positioning and connections
+ * @returns {React.JSX.Element} The rendered SVG visualization of the trie
  */
 export function TrieSVGViewer(): React.JSX.Element {
   const { trie, selectedNode, selectNode } = useTrieContext();

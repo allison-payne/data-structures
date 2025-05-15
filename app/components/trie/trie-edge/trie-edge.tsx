@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type TrieEdgeProps = {
   x1: string;
   y1: string;
@@ -7,13 +9,14 @@ export type TrieEdgeProps = {
 };
 
 /**
- *
- * @param root0
- * @param root0.x1
- * @param root0.y1
- * @param root0.x2
- * @param root0.y2
- * @param root0.character
+ * Component for rendering an edge between two nodes in the Trie visualization
+ * @param {object} root0 - The component props
+ * @param {string} root0.x1 - The x-coordinate of the starting point
+ * @param {string} root0.y1 - The y-coordinate of the starting point
+ * @param {string} root0.x2 - The x-coordinate of the ending point
+ * @param {string} root0.y2 - The y-coordinate of the ending point
+ * @param {string} root0.character - The character to display on the edge
+ * @returns {React.Element} The rendered SVG edge with character
  */
 export function TrieEdge({ x1, y1, x2, y2, character }: TrieEdgeProps) {
   // Calculate the midpoint for placing the edge label

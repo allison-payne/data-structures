@@ -6,7 +6,8 @@ import { BinaryTreeProvider } from '~/context/BinaryTreeContext';
 export const BST_ROUTE = 'binary-search-tree';
 
 /**
- *
+ * Binary Search Tree route component for visualizing binary search tree operations
+ * @returns {React.Element} The rendered Binary Search Tree page
  */
 export default function BST() {
   // Predefined tree patterns

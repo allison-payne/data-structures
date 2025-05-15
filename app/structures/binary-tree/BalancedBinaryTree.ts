@@ -12,8 +12,8 @@ export class BalancedBinaryTree<T> extends BinaryTree<T> {
    * It uses the in-order traversal of the tree to get a sorted array
    * Then it builds a new balanced tree from that array
    * @returns {object} Object containing visualization steps and the balanced tree
-   * @returns {Array<BalanceStep<T>>} returns.steps Steps for visualization
-   * @returns {BinaryTree<T>} returns.balancedTree The balanced binary tree
+   * @property {Array<BalanceStep<T>>} steps Steps for visualization
+   * @property {BinaryTree<T>} balancedTree The balanced binary tree
    */
   balance(): { steps: Array<BalanceStep<T>>; balancedTree: BinaryTree<T> } {
     // Get in-order traversal to have nodes in sorted order
@@ -97,6 +97,12 @@ export class BalancedBinaryTree<T> extends BinaryTree<T> {
 /**
  * Interface for a balance step used in visualization
  * Each step represents a state of the tree during the balancing process
+ * @template T The type of data stored in the tree nodes
+ */
+
+/**
+ * Represents a step in the tree balancing visualization process
+ * Contains the state of the tree and UI information for each step of the algorithm
  * @template T The type of data stored in the tree nodes
  */
 export interface BalanceStep<T> {

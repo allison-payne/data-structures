@@ -1,8 +1,10 @@
-import { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTrieContext } from '~/context/TrieContext';
 
 /**
- *
+ * Form component for interacting with the trie visualization
+ * Provides controls for adding words, searching the trie, and viewing all words
+ * @returns {React.Element} The rendered trie control form
  */
 export function TrieEditorForm() {
   const addWordInputRef = useRef<HTMLInputElement>(null);

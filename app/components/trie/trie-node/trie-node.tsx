@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { initialViewBox } from '../../svg/constants';
 import { TrieNode } from '~/structures/trie/TrieNode';
 
@@ -11,11 +11,12 @@ export type TrieNodeSVGProps = {
 };
 
 /**
- *
- * @param root0
- * @param root0.node
- * @param root0.selectedNode
- * @param root0.onClick
+ * Component for rendering a trie node as an SVG element
+ * @param {object} root0 - The component props
+ * @param {TrieNode} root0.node - The trie node to render
+ * @param {TrieNode} [root0.selectedNode] - The currently selected node, if any
+ * @param {Function} root0.onClick - Callback function when node is clicked
+ * @returns {React.Element} The rendered SVG trie node
  */
 export function TrieNodeSVG({ node, selectedNode, onClick }: TrieNodeSVGProps) {
   const { x, y } = node.coordinates;

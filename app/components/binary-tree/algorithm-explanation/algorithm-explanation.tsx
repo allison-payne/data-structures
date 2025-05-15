@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import React, { type JSX } from 'react';
 import type { AlgorithmType } from '../types';
 
 /**
@@ -12,9 +12,9 @@ export type AlgorithmExplanationProps = {
 /**
  * Component that displays educational content about the selected algorithm
  * Provides explanations and descriptions of how various tree algorithms work
- * @param props Component properties
- * @param props.algorithm The algorithm type to display the explanation for
- * @returns JSX element with the algorithm explanation or empty fragment if no algorithm selected
+ * @param {object} props Component properties
+ * @param {AlgorithmType} props.algorithm The algorithm type to display the explanation for
+ * @returns {React.Element} JSX element with the algorithm explanation or empty fragment if no algorithm selected
  */
 export function AlgorithmExplanation({ algorithm }: AlgorithmExplanationProps) {
   if (algorithm === 'none') {
@@ -33,8 +33,8 @@ export function AlgorithmExplanation({ algorithm }: AlgorithmExplanationProps) {
 
 /**
  * Retrieves the educational explanation content for a specific algorithm
- * @param algorithm The algorithm to get the explanation for
- * @returns JSX Element containing the explanation content
+ * @param {AlgorithmType} algorithm The algorithm to get the explanation for
+ * @returns {React.Element} JSX Element containing the explanation content
  */
 function getAlgorithmExplanation(algorithm: AlgorithmType): JSX.Element {
   switch (algorithm) {

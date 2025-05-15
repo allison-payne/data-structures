@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -91,7 +92,7 @@ let Context: any = null;
  * @param {object} props Component props
  * @param {ReactNode} props.children Child components to render within the provider
  * @param {Array<T>} props.initialData Initial data to populate the binary tree
- * @returns {JSX.Element} The provider component
+ * @returns {React.Element} The provider component
  */
 export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProviderProps<T>) {
   const defaultContext: BinaryTreeContext<T> = {
@@ -195,7 +196,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
     setCurrentStep(0);
     setTotalSteps(0);
     setAlgorithmSteps([]);
-    setHighlightedNodes([] as any);
+    setHighlightedNodes([] as Array<T>);
     setCurrentStepDescription('');
 
     // Clear animation timer if it exists
@@ -215,7 +216,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
   const [currentStepDescription, setCurrentStepDescription] = useState<string>('');
 
   // Timer reference for animation playback
-  const animationTimerRef = React.useRef<number | null>(null);
+  const animationTimerRef = useRef<number | null>(null);
 
   // Generate algorithm steps based on the selected algorithm
   const generateAlgorithmSteps = useCallback(
@@ -649,7 +650,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
 
       return steps;
     },
-    [tree]
+    [tree, selectedNode]
   );
 
   // Update the current step state with the highlighted nodes and description
@@ -658,7 +659,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
       if (step >= 0 && step < algorithmSteps.length) {
         const currentStepData = algorithmSteps[step];
         setCurrentStepDescription(currentStepData.description);
-        setHighlightedNodes(currentStepData.highlightedNodes || ([] as any));
+        setHighlightedNodes(currentStepData.highlightedNodes || ([] as Array<T>));
       }
     },
     [algorithmSteps]
@@ -679,7 +680,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
       if (algorithm === 'none') {
         setAlgorithmSteps([]);
         setTotalSteps(0);
-        setHighlightedNodes([] as any);
+        setHighlightedNodes([] as Array<T>);
         setCurrentStepDescription('');
         return;
       }
@@ -690,7 +691,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
 
       if (steps.length > 0) {
         setCurrentStepDescription(steps[0].description);
-        setHighlightedNodes((steps[0].highlightedNodes as any) || ([] as any));
+        setHighlightedNodes((steps[0].highlightedNodes as Array<T>) || ([] as Array<T>));
       }
     },
     [generateAlgorithmSteps, animationTimerRef]
@@ -738,7 +739,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
         updateCurrentStepState(nextStep);
         return nextStep;
       });
-    }, getInterval()) as any;
+    }, getInterval()) as number;
   }, [currentStep, totalSteps, animationSpeed, updateCurrentStepState]);
 
   const pauseAnimation = useCallback(() => {
@@ -846,7 +847,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
     totalSteps,
     animationSpeed,
     algorithmSteps,
-    highlightedNodes: highlightedNodes as any,
+    highlightedNodes: highlightedNodes as Array<T>,
     currentStepDescription,
 
     // Algorithm animation methods

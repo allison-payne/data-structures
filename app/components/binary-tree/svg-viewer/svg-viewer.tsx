@@ -12,7 +12,6 @@ import TreeNodeSVG from '../../svg/tree-node';
  * Component for visualizing a Binary Search Tree using SVG
  * Renders the tree structure with nodes and branches, supports node selection
  * and algorithm visualization with highlighting
- *
  * @template T The type of data stored in the binary tree
  * @returns {JSX.Element} The visualized binary tree component
  */
@@ -22,7 +21,6 @@ export function BinaryTreeSVGViewer<T>(): React.ReactElement {
 
   /**
    * Converts coordinate values to SVG space by applying scaling
-   *
    * @param {number} coordValue The coordinate value to scale
    * @returns {string} The scaled coordinate as a string
    */
@@ -32,7 +30,6 @@ export function BinaryTreeSVGViewer<T>(): React.ReactElement {
 
   /**
    * Determines if a node should be highlighted as part of the algorithm visualization
-   *
    * @param {TreeNode<T>} node The tree node to check
    * @returns {boolean} true if the node should be highlighted, false otherwise
    */

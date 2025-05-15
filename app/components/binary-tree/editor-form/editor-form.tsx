@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useBinaryTreeContext } from '~/context/BinaryTreeContext';
 import AnimationControls from '../animation-controls';
 import AlgorithmSelector from '../algorithm-selector';
@@ -7,7 +7,10 @@ import AlgorithmExplanation from '../algorithm-explanation';
 import type { AlgorithmType, AnimationSpeed } from '../types';
 
 /**
- *
+ * Form component for interacting with the binary tree visualization
+ * Provides controls for adding/removing nodes, choosing algorithms, and controlling animations
+ * @template T The type of data stored in the binary tree
+ * @returns {React.Element} The rendered binary tree control form
  */
 export function BinaryTreeForm<T>() {
   const addNodeInputRef = useRef<HTMLInputElement>(null);

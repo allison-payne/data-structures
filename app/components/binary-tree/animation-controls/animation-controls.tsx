@@ -1,18 +1,20 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import type { AnimationControlsProps, AnimationSpeed } from '../types';
 
 /**
- *
- * @param root0
- * @param root0.onPlay
- * @param root0.onPause
- * @param root0.onStepForward
- * @param root0.onStepBackward
- * @param root0.onSpeedChange
- * @param root0.isPlaying
- * @param root0.currentSpeed
- * @param root0.canStepForward
- * @param root0.canStepBackward
+ * Component for controlling algorithm animation playback
+ * Provides play/pause buttons, step navigation, and speed controls
+ * @param {object} props Component properties
+ * @param {Function} props.onPlay Callback when animation is played
+ * @param {Function} props.onPause Callback when animation is paused
+ * @param {Function} props.onStepForward Callback to step forward in animation
+ * @param {Function} props.onStepBackward Callback to step backward in animation
+ * @param {Function} props.onSpeedChange Callback when animation speed changes
+ * @param {boolean} props.isPlaying Whether the animation is currently playing
+ * @param {AnimationSpeed} props.currentSpeed Current animation speed setting
+ * @param {boolean} props.canStepForward Whether stepping forward is allowed
+ * @param {boolean} props.canStepBackward Whether stepping backward is allowed
+ * @returns {React.Element} The animation controls UI
  */
 export function AnimationControls({
   onPlay,

@@ -1,12 +1,23 @@
+import React from 'react';
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Trie } from '~/structures/trie/Trie';
 import { TrieNode } from '~/structures/trie/TrieNode';
 
+/**
+ * Props for the TrieProvider component
+ */
 interface TrieProviderProps {
+  /** React children components */
   children: ReactNode;
+
+  /** Optional initial words to populate the trie */
   initialWords?: Array<string>;
 }
 
+/**
+ * Context interface providing trie state and operations
+ * Provides access to the trie data structure and methods for manipulating it
+ */
 interface TrieContext {
   trie: Trie | null;
   words: Array<string>;
@@ -41,10 +52,11 @@ const defaultContext: TrieContext = {
 const Context = createContext<TrieContext>(defaultContext);
 
 /**
- *
- * @param root0
- * @param root0.children
- * @param root0.initialWords
+ * Provider component that wraps the application to provide trie context
+ * @param {object} props Component props
+ * @param {ReactNode} props.children Child components to render within the provider
+ * @param {Array<string>} [props.initialWords] Initial words to populate the trie
+ * @returns {React.Element} The provider component
  */
 export function TrieProvider({ children, initialWords = [] }: TrieProviderProps) {
   const [trie] = useState<Trie>(new Trie());
@@ -155,6 +167,11 @@ export function TrieProvider({ children, initialWords = [] }: TrieProviderProps)
 
 /**
  *
+ */
+/**
+ * Custom hook to access the trie context
+ * @returns {TrieContext} The trie context
+ * @throws {Error} If used outside of a TrieProvider
  */
 export function useTrieContext() {
   const context = useContext(Context);

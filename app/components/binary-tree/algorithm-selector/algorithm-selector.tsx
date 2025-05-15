@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import type { AlgorithmType } from '../types';
 
 export type AlgorithmSelectorProps = {
@@ -7,10 +7,11 @@ export type AlgorithmSelectorProps = {
 };
 
 /**
- *
- * @param root0
- * @param root0.onSelectAlgorithm
- * @param root0.currentAlgorithm
+ * Component for selecting which tree algorithm to visualize
+ * @param {object} props Component properties
+ * @param {Function} props.onSelectAlgorithm Callback function when algorithm is selected
+ * @param {AlgorithmType} props.currentAlgorithm The currently selected algorithm
+ * @returns {React.Element} The algorithm selector dropdown
  */
 export function AlgorithmSelector({ onSelectAlgorithm, currentAlgorithm }: AlgorithmSelectorProps) {
   const handleChange = useCallback(

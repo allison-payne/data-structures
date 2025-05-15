@@ -1,3 +1,4 @@
+import React from 'react';
 import TrieEditorForm from '~/components/trie/editor-form';
 import TrieSVGViewer from '~/components/trie/svg-viewer';
 import { TrieProvider } from '~/context/TrieContext';
@@ -5,7 +6,8 @@ import { TrieProvider } from '~/context/TrieContext';
 export const TRIE_ROUTE = 'trie';
 
 /**
- *
+ * Trie data structure route component for visualizing trie operations
+ * @returns {React.Element} The rendered Trie page
  */
 export default function Trie() {
   const initialWords = ['tree', 'trie', 'try', 'trial', 'triangle', 'trend'];

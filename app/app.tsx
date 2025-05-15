@@ -1,3 +1,4 @@
+import React from 'react';
 import { Route, Routes } from 'react-router';
 import Layout from './layout';
 import BST, { BST_ROUTE } from './routes/binary-tree';
@@ -7,7 +8,8 @@ import './app.css';
 import Trie, { TRIE_ROUTE } from './routes/trie';
 
 /**
- *
+ * Main application component that sets up the routing structure
+ * @returns {React.Element} The rendered application with all routes
  */
 function App() {
   return (

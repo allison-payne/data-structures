@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { TreeNode } from '~/structures/binary-tree/TreeNode';
 import { initialViewBox } from '../constants';
 
@@ -12,12 +12,14 @@ export type TreeNodeSVGProps<T> = {
 };
 
 /**
- *
- * @param root0
- * @param root0.node
- * @param root0.selectedNode
- * @param root0.onClick
- * @param root0.highlighted
+ * Component for rendering a tree node as an SVG circle
+ * @template T The type of data stored in the tree node
+ * @param {object} props Component properties
+ * @param {TreeNode<T>} props.node The tree node to render
+ * @param {TreeNode<T>} [props.selectedNode] The currently selected node, if any
+ * @param {Function} props.onClick Callback function when node is clicked
+ * @param {boolean} [props.highlighted] Whether the node should be highlighted
+ * @returns {React.Element} SVG representation of a tree node
  */
 export function TreeNodeSVG<T>({
   node,
@@ -37,7 +39,7 @@ export function TreeNodeSVG<T>({
   const handleNodeClick = useCallback(() => {
     setSelected(!selected);
     onClick(node);
-  }, [node, selectedNode, selected, onClick]);
+  }, [node, selected, onClick]);
 
   useEffect(() => {
     setSelected(selectedNode === node);
