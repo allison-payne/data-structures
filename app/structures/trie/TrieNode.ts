@@ -1,11 +1,16 @@
+import { type ITrieNode } from '../interfaces/DataStructure';
+
 /**
  * Represents a node in a Trie data structure.
  * Each node contains a character, a flag indicating if it's the end of a word,
  * a map of child nodes, and coordinates for visualization.
  */
-export class TrieNode {
+export class TrieNode implements ITrieNode {
   /** The character stored in this node */
   character: string;
+
+  /** The data value stored in this node (same as character for Trie) */
+  data: string;
 
   /** Flag indicating if this node represents the end of a complete word */
   isEndOfWord: boolean;
@@ -22,6 +27,7 @@ export class TrieNode {
    */
   constructor(character: string = '') {
     this.character = character;
+    this.data = character; // Set data to be the same as character
     this.isEndOfWord = false;
     this.children = new Map<string, TrieNode>();
     this.coordinates = { x: 0, y: 0 };

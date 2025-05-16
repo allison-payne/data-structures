@@ -3,8 +3,9 @@ import {
   calculateNodeOffset,
   centerParentsBetweenChildren,
 } from '~/utils/visualization';
-import { INITIAL_OFFSET, SPACE_BETWEEN_CHILDREN, SPACE_BETWEEN_SIBLINGS } from './constants';
+import { INITIAL_OFFSET, SPACE_BETWEEN_CHILDREN } from './constants';
 import { TreeNode } from './TreeNode';
+import type { IBinaryTreeStructure } from '../interfaces/DataStructure';
 // Using original constants for now until we update the tree-layout utilities to be fully compatible
 
 /**
@@ -14,15 +15,19 @@ import { TreeNode } from './TreeNode';
  * and all elements in its right subtree are greater than the node.
  * @template T The type of data stored in the tree, must support comparison operations
  */
-export class BinaryTree<T> {
+export class BinaryTree<T> implements IBinaryTreeStructure<T, TreeNode<T>> {
   /** Reference to the root node of the tree */
   root: TreeNode<T> | null;
+
+  /** Number of nodes in the tree */
+  size: number;
 
   /**
    * Creates a new empty Binary Search Tree
    */
   constructor() {
     this.root = null;
+    this.size = 0;
   }
 
   /**
@@ -34,12 +39,14 @@ export class BinaryTree<T> {
     const node = this.root;
     if (node === null) {
       this.root = new TreeNode(value);
+      this.size++;
       return;
     } else {
       const searchTree = (node: TreeNode<T>): null | void => {
         if (value < node.data) {
           if (node.left === null) {
             node.left = new TreeNode(value, node);
+            this.size++;
             return;
           } else if (node.left !== null) {
             return searchTree(node.left);
@@ -47,6 +54,7 @@ export class BinaryTree<T> {
         } else if (value > node.data) {
           if (node.right === null) {
             node.right = new TreeNode(value, node);
+            this.size++;
             return;
           } else if (node.right !== null) {
             return searchTree(node.right);
@@ -141,6 +149,8 @@ export class BinaryTree<T> {
    * @returns {void} Updates the tree by removing the specified node
    */
   remove(data: T): null | void {
+    const isNodePresent = this.isPresent(data);
+
     const removeNode = (node: TreeNode<T> | null, data: T) => {
       if (node === null) {
         return null;
@@ -180,7 +190,13 @@ export class BinaryTree<T> {
         return node;
       }
     };
+
     this.root = removeNode(this.root, data);
+
+    // Update size only if a node was actually removed
+    if (isNodePresent) {
+      this.size--;
+    }
   }
 
   /**
@@ -260,11 +276,11 @@ export class BinaryTree<T> {
   /**
    * Performs a pre-order traversal of the tree
    * Pre-order traversal visits root, then left subtree, then right subtree
-   * @returns {Array<TreeNode<T>> | null} Array of tree nodes in pre-order sequence, or null if the tree is empty
+   * @returns {Array<TreeNode<T>>} Array of tree nodes in pre-order sequence
    */
-  preOrder(): Array<TreeNode<T>> | null {
+  preOrder(): Array<TreeNode<T>> {
     if (this.root === null) {
-      return null;
+      return [];
     } else {
       const result = new Array<TreeNode<T>>();
       const traversePreOrder = (node: TreeNode<T>) => {
@@ -284,11 +300,11 @@ export class BinaryTree<T> {
   /**
    * Performs a post-order traversal of the tree
    * Post-order traversal visits left subtree, then right subtree, then root
-   * @returns {Array<TreeNode<T>> | null} Array of tree nodes in post-order sequence, or null if the tree is empty
+   * @returns {Array<TreeNode<T>>} Array of tree nodes in post-order sequence
    */
-  postOrder(): Array<TreeNode<T>> | null {
+  postOrder(): Array<TreeNode<T>> {
     if (this.root === null) {
-      return null;
+      return [];
     } else {
       const result = new Array<TreeNode<T>>();
       const traversePostOrder = (node: TreeNode<T>) => {
@@ -308,9 +324,9 @@ export class BinaryTree<T> {
   /**
    * Performs a level-order (breadth-first) traversal of the tree
    * Level-order traversal visits nodes level by level, from top to bottom, left to right
-   * @returns {Array<TreeNode<T>> | null} Array of tree nodes in level-order sequence, or null if the tree is empty
+   * @returns {Array<TreeNode<T>>} Array of tree nodes in level-order sequence
    */
-  levelOrder(): Array<TreeNode<T>> | null {
+  levelOrder(): Array<TreeNode<T>> {
     const result = new Array<TreeNode<T>>();
     const Q = new Array<TreeNode<T>>();
     if (this.root !== null) {
@@ -329,7 +345,7 @@ export class BinaryTree<T> {
       }
       return result;
     } else {
-      return null;
+      return [];
     }
   }
 
@@ -366,5 +382,13 @@ export class BinaryTree<T> {
     preOrderNodes?.forEach(node => {
       node.coordinates.y = calcNextY(node);
     });
+  }
+
+  /**
+   * Performs a default traversal of the tree (in-order by default)
+   * @returns {Array<TreeNode<T>>} Array of tree nodes in traversal order
+   */
+  traverse(): Array<TreeNode<T>> {
+    return this.inOrder();
   }
 }

@@ -1,10 +1,12 @@
+import { type IBinaryTreeNode } from '../interfaces/DataStructure';
+
 /**
  * Represents a node in a binary tree data structure.
  * Each node contains data, references to left and right children,
  * a reference to its parent, and coordinates for visualization.
  * @template T The type of data stored in the node
  */
-export class TreeNode<T> {
+export class TreeNode<T> implements IBinaryTreeNode<T> {
   /** The data value stored in this node */
   data: T;
 

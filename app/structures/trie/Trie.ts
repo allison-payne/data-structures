@@ -1,4 +1,5 @@
 import { TrieNode } from './TrieNode';
+import type { ITrieStructure } from '../interfaces/DataStructure';
 
 /**
  * Trie (Prefix Tree) data structure implementation.
@@ -6,7 +7,7 @@ import { TrieNode } from './TrieNode';
  * for string keys, typically used for dictionary implementations, auto-completions,
  * and prefix-based searches. Each node in the tree represents a character in a word.
  */
-export class Trie {
+export class Trie implements ITrieStructure<TrieNode> {
   /** Reference to the root node of the trie (empty character) */
   root: TrieNode;
 
@@ -46,6 +47,15 @@ export class Trie {
   }
 
   /**
+   * Adds a new value to the trie (alias of insert for DataStructure interface)
+   * @param {string} value The string value to add
+   * @returns {void}
+   */
+  add(value: string): void {
+    this.insert(value);
+  }
+
+  /**
    * Checks if a word exists in the trie
    * @param {string} word The word to search for
    * @returns {boolean} true if the word exists, false otherwise
@@ -55,6 +65,15 @@ export class Trie {
 
     const node = this.findNode(word);
     return node !== null && node.isEndOfWord;
+  }
+
+  /**
+   * Checks if a value exists in the trie (alias of search for DataStructure interface)
+   * @param {string} value The string value to check
+   * @returns {boolean} true if the value exists, false otherwise
+   */
+  isPresent(value: string): boolean {
+    return this.search(value);
   }
 
   /**
@@ -77,6 +96,15 @@ export class Trie {
     if (!word) return false;
 
     return this._deleteWord(this.root, word, 0);
+  }
+
+  /**
+   * Removes a value from the trie (alias of delete for DataStructure interface)
+   * @param {string} value The string value to remove
+   * @returns {boolean} true if the value was removed, false otherwise
+   */
+  remove(value: string): boolean {
+    return this.delete(value);
   }
 
   /**
