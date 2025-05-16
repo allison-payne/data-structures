@@ -1,8 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router';
+import { BST_ROUTE } from '~/routes/binary-tree';
+import { TRIE_ROUTE } from '~/routes/trie';
 
 /**
  * Welcome component that displays introductory information about the application
- * @returns {React.Element} JSX element containing the welcome message
+ * @returns {React.JSX.Element} JSX element containing the welcome message
  */
 export function Welcome() {
   return (
@@ -51,8 +54,8 @@ export function Welcome() {
 
         <div className="bg-gray-50 dark:bg-gray-700/50 p-6 border-t border-gray-200 dark:border-gray-700">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a
-              href="/binary-tree"
+            <Link
+              to={BST_ROUTE}
               className="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
             >
               <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg mr-4">
@@ -77,10 +80,10 @@ export function Welcome() {
                   Explore tree traversals, insertion, and balancing
                 </p>
               </div>
-            </a>
+            </Link>
 
-            <a
-              href="/trie"
+            <Link
+              to={TRIE_ROUTE}
               className="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
             >
               <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg mr-4">
@@ -105,7 +108,7 @@ export function Welcome() {
                   Learn about prefix trees and their applications
                 </p>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

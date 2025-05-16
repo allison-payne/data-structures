@@ -52,9 +52,13 @@ export interface DataStructureVisualizationProps {
 /**
  * A generic visualization component for data structures that provides
  * consistent styling, theming, and responsive behavior
- *
- * @param props Component properties
- * @returns The visualization container with rendered content
+ * @param {DataStructureVisualizationProps} props - Component properties
+ * @param {ReactNode} props.children - The children elements to render inside the visualization container
+ * @param {string} [props.className] - Optional className to apply to the container
+ * @param {number|string} [props.width] - Optional width for the container (default: 100%)
+ * @param {number|string} [props.height] - Optional height for the container (default: aspect ratio 1:1)
+ * @param {object} [props.options] - Optional rendering options specific to the data structure
+ * @returns {React.JSX.Element} The visualization container with rendered content
  */
 export function DataStructureVisualization({
   children,
@@ -100,14 +104,17 @@ export function DataStructureVisualization({
 
     // Add resize listener
     const resizeObserver = new ResizeObserver(updateDimensions);
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
+    // Store the current ref value to use in cleanup
+    const currentContainer = containerRef.current;
+
+    if (currentContainer) {
+      resizeObserver.observe(currentContainer);
     }
 
     // Clean up
     return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
+      if (currentContainer) {
+        resizeObserver.unobserve(currentContainer);
       }
       resizeObserver.disconnect();
     };

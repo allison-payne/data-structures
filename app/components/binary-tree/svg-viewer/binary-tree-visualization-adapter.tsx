@@ -11,9 +11,8 @@ import type { VisualizationNodeProps } from '~/components/shared/visualization-b
 /**
  * Adapter component to use the generic DataStructureVisualization for binary trees
  * Demonstrates how specific data structure visualizations can extend the base component
- *
  * @template T The type of data stored in the binary tree
- * @returns A rendered binary tree visualization
+ * @returns {React.JSX.Element} A rendered binary tree visualization
  */
 export function BinaryTreeVisualizationAdapter<T>() {
   const { orderedTreeNodes, selectedNode, selectNode, highlightedNodes } =
@@ -102,6 +101,8 @@ export function BinaryTreeVisualizationAdapter<T>() {
   return (
     <DataStructureVisualization
       className="binary-tree-visualization"
+      width="100%"
+      height="100%"
       options={{
         maintainAspectRatio: true,
       }}

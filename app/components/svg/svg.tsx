@@ -30,12 +30,12 @@ export type SVGProps = {
  * Shared SVG component used for visualizing data structures
  * @param {object} props - The component props
  * @param {ReactNode} props.children - The SVG content to display
- * @param {number} [props.viewBoxWidth=100] - Width of the SVG viewBox
- * @param {number} [props.viewBoxHeight=100] - Height of the SVG viewBox
+ * @param {number} [props.viewBoxWidth] - Width of the SVG viewBox
+ * @param {number} [props.viewBoxHeight] - Height of the SVG viewBox
  * @param {string} [props.className] - Optional CSS classes to apply
  * @param {number|string} [props.width] - Optional width for the container
  * @param {number|string} [props.height] - Optional height for the container
- * @returns {React.Element} The SVG pan/zoom container with the provided children
+ * @returns {React.JSX.Element} The SVG pan/zoom container with the provided children
  */
 const SVG = ({
   children,
@@ -49,7 +49,7 @@ const SVG = ({
   const Viewer = useRef<ReactSVGPanZoom>(null);
   const [tool, setTool] = useState<Tool>(TOOL_AUTO);
   const [value, setValue] = useState<Value>({} as Value);
-  const [dimensions, setDimensions] = useState({ width: 600, height: 600 });
+  const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
   const { theme } = useTheme();
 
   // Theme-aware background colors
@@ -57,41 +57,33 @@ const SVG = ({
 
   // Update dimensions based on container size
   useEffect(() => {
+    const currentContainer = containerRef.current;
+
     const updateDimensions = () => {
       if (containerRef.current) {
-        const containerWidth = containerRef.current.clientWidth;
-        // Maintain aspect ratio if height not explicitly provided
-        const containerHeight =
-          typeof height !== 'undefined'
-            ? typeof height === 'number'
-              ? height
-              : parseInt(height as string, 10) || containerWidth
-            : containerWidth;
-
         setDimensions({
-          width: containerWidth,
-          height: containerHeight,
+          width: containerRef.current.clientWidth,
+          height: containerRef.current.clientHeight,
         });
       }
     };
 
     // Initial update
     updateDimensions();
-
     // Add resize listener
     const resizeObserver = new ResizeObserver(updateDimensions);
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
+    if (currentContainer) {
+      resizeObserver.observe(currentContainer);
     }
 
     // Clean up
     return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
+      if (currentContainer) {
+        resizeObserver.unobserve(currentContainer);
       }
       resizeObserver.disconnect();
     };
-  }, [height]);
+  }, [containerRef]);
 
   useEffect(() => {
     if (Viewer.current) {
@@ -123,30 +115,32 @@ const SVG = ({
       }}
       className={`svg-container rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm ${className}`}
     >
-      <ReactSVGPanZoom
-        ref={Viewer}
-        background={background}
-        width={dimensions.width}
-        height={dimensions.height}
-        tool={tool}
-        onChangeTool={setTool}
-        preventPanOutside={true}
-        detectAutoPan={false}
-        SVGBackground={background}
-        value={value}
-        onChangeValue={setValueHandler}
-        scaleFactorOnWheel={1.1}
-        miniatureProps={{
-          position: 'none',
-          background: background,
-          width: 100,
-          height: 80,
-        }}
-        toolbarProps={{ position: 'none' }}
-        className="transition-colors duration-200"
-      >
-        <svg viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}>{children}</svg>
-      </ReactSVGPanZoom>
+      {dimensions && (
+        <ReactSVGPanZoom
+          ref={Viewer}
+          background={background}
+          width={dimensions.width}
+          height={dimensions.height}
+          tool={tool}
+          onChangeTool={setTool}
+          preventPanOutside={true}
+          detectAutoPan={false}
+          SVGBackground={background}
+          value={value}
+          onChangeValue={setValueHandler}
+          scaleFactorOnWheel={1.1}
+          miniatureProps={{
+            position: 'none',
+            background: background,
+            width: 100,
+            height: 80,
+          }}
+          toolbarProps={{ position: 'none' }}
+          className="transition-colors duration-200"
+        >
+          <svg viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}>{children}</svg>
+        </ReactSVGPanZoom>
+      )}
     </div>
   );
 };
