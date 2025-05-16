@@ -6,6 +6,15 @@ Data Structures 101 offers a dynamic and engaging way to explore fundamental com
 
 ## Features
 
+### Shared Visualization Utilities
+
+The application features a robust set of shared visualization utilities that ensure consistency across different data structure visualizations:
+
+- **Coordinate Utilities**: Transform and calculate positions for visualization elements
+- **Tree Layout Algorithms**: Position tree nodes optimally with proper spacing and alignment
+- **Animation Helpers**: Create smooth, consistent animations with customizable easing functions
+- **Responsive Layouts**: Adapt visualizations to different screen sizes while maintaining proportions
+
 ### Binary Search Tree (BST)
 
 ![Binary Search Tree Visualization](bst.png)
@@ -116,12 +125,22 @@ data-structures/
 ├── app/
 │   ├── components/          # Reusable UI components
 │   │   ├── binary-tree/     # BST-specific components
+│   │   ├── shared/          # Shared visualization components
+│   │   │   ├── visualization-base/      # Base visualization component
+│   │   │   └── visualization-utils-demo/ # Demo of shared utilities
+│   │   ├── svg/             # SVG rendering components
 │   │   └── trie/            # Trie-specific components
 │   ├── context/             # React context providers
 │   ├── routes/              # Application routes
-│   └── structures/          # Data structure implementations
-│       ├── binary-tree/     # BST implementation
-│       └── trie/            # Trie implementation
+│   ├── structures/          # Data structure implementations
+│   │   ├── binary-tree/     # BST implementation
+│   │   └── trie/            # Trie implementation
+│   └── utils/
+│       └── visualization/   # Shared visualization utilities
+│           ├── coordinates.ts # Coordinate transformation utilities
+│           ├── tree-layout.ts # Tree node positioning algorithms
+│           ├── animation.ts   # Animation utilities and easing functions
+│           └── responsive.ts  # Responsive layout utilities
 ├── public/                  # Static assets
 └── [configuration files]
 ```
@@ -132,7 +151,8 @@ data-structures/
 - **TypeScript**: Type-safe JavaScript
 - **Tailwind CSS**: Utility-first styling
 - **React Router**: Navigation and routing
-- **Vite**: Build tooling and development server
+- **Vite**: Build tooling and development server 
+- **Shared Visualization Architecture**: Custom-built utilities for consistent data structure visualization
 
 ## Future Development
 
@@ -143,6 +163,24 @@ From our design document, we're planning to enhance the application with:
 - **Improved Mobile Responsiveness**: Better support for learning on smaller devices
 - **Algorithm Comparison**: Side-by-side comparison of different algorithms on the same data structure
 - **Custom Input Data**: Allow users to input their own data for visualization
+- **Extended Visualization Utilities**: 
+  - Further optimizations for large data structures using virtual rendering
+  - Advanced tree layout algorithms (Reingold-Tilford implementation)
+  - Additional animation capabilities and specialized renderers
+
+## Architecture Highlights
+
+### Shared Visualization Utilities
+
+The application features a modular architecture with shared visualization utilities that:
+
+- **Reduce code duplication** across different data structure visualizations
+- **Ensure consistency** in animation behaviors and visual styling
+- **Improve maintainability** by centralizing core visualization logic
+- **Enhance responsiveness** with adaptive layout calculations
+- **Simplify creation** of new data structure visualizations
+
+For more details, see the [Visualization Utilities documentation](app/utils/visualization/README.md) and [Integration Guide](app/utils/visualization/INTEGRATION.md).
 
 ## Contributing
 
