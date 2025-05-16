@@ -1,5 +1,11 @@
+import {
+  DEFAULT_TREE_LAYOUT,
+  calculateNodeOffset,
+  centerParentsBetweenChildren,
+} from '~/utils/visualization';
 import { INITIAL_OFFSET, SPACE_BETWEEN_CHILDREN, SPACE_BETWEEN_SIBLINGS } from './constants';
 import { TreeNode } from './TreeNode';
+// Using original constants for now until we update the tree-layout utilities to be fully compatible
 
 /**
  * Binary Search Tree implementation.
@@ -333,28 +339,18 @@ export class BinaryTree<T> {
    * and pre-order traversal (for parent positioning)
    */
   calculateNodeX(): void {
-    const offset = (node: TreeNode<T>) =>
-      SPACE_BETWEEN_SIBLINGS / (node.coordinates.y / SPACE_BETWEEN_CHILDREN);
-
-    const calcNextX = (xValue: number, node: TreeNode<T>): number => {
-      return xValue + offset(node);
-    };
+    const { INITIAL_OFFSET } = DEFAULT_TREE_LAYOUT;
 
     let xAcc = INITIAL_OFFSET;
     const orderedNodes = this.inOrder();
     orderedNodes?.forEach(node => {
       if (node === this.root) xAcc = 0.5;
       node.coordinates.x = xAcc;
-      xAcc = +calcNextX(xAcc, node); // Note: This should be xAcc += calcNextX(xAcc, node)
+      xAcc += calculateNodeOffset(node);
     });
 
     const preOrderNodes = this.preOrder();
-    preOrderNodes?.forEach(node => {
-      if (node.left && node.right) {
-        node.coordinates.x =
-          node.left.coordinates.x + (node.right.coordinates.x - node.left.coordinates.x) / 2;
-      }
-    });
+    if (preOrderNodes) centerParentsBetweenChildren(preOrderNodes);
   }
 
   /**

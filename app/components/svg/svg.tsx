@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ReactSVGPanZoom, TOOL_AUTO, type Tool, type Value } from 'react-svg-pan-zoom';
 import { useTheme } from '~/context/ThemeContext';
+import { calculateMaintainedAspectRatio, calculateViewBox } from '~/utils/visualization';
 
 export type SVGProps = {
   children: ReactNode;
@@ -55,21 +56,29 @@ const SVG = ({
   // Theme-aware background colors
   const background = theme === 'light' ? '#f0f0f0' : '#333333';
 
-  // Update dimensions based on container size
+  // Update dimensions based on container size while maintaining aspect ratio
   useEffect(() => {
     const currentContainer = containerRef.current;
 
     const updateDimensions = () => {
       if (containerRef.current) {
-        setDimensions({
-          width: containerRef.current.clientWidth,
-          height: containerRef.current.clientHeight,
-        });
+        const containerWidth = containerRef.current.clientWidth;
+        const containerHeight = containerRef.current.clientHeight;
+
+        // Use our utility to calculate dimensions that maintain aspect ratio
+        const optimalDimensions = calculateMaintainedAspectRatio(
+          containerWidth,
+          containerHeight,
+          viewBoxWidth / viewBoxHeight
+        );
+
+        setDimensions(optimalDimensions);
       }
     };
 
     // Initial update
     updateDimensions();
+
     // Add resize listener
     const resizeObserver = new ResizeObserver(updateDimensions);
     if (currentContainer) {
@@ -83,7 +92,7 @@ const SVG = ({
       }
       resizeObserver.disconnect();
     };
-  }, [containerRef]);
+  }, [containerRef, viewBoxWidth, viewBoxHeight]);
 
   useEffect(() => {
     if (Viewer.current) {
@@ -138,7 +147,7 @@ const SVG = ({
           toolbarProps={{ position: 'none' }}
           className="transition-colors duration-200"
         >
-          <svg viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}>{children}</svg>
+          <svg viewBox={calculateViewBox(viewBoxWidth, viewBoxHeight, 0.05)}>{children}</svg>
         </ReactSVGPanZoom>
       )}
     </div>

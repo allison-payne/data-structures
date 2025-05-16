@@ -7,10 +7,11 @@ import React, {
   useState,
   type ReactNode,
 } from 'react';
-import type { AlgorithmType, AnimationSpeed } from '~/components/binary-tree/types';
+import type { AlgorithmType, AnimationSpeed } from '~/utils/visualization/types';
 import { BinaryTree } from '~/structures/binary-tree/BinaryTree';
 import { BalancedBinaryTree } from '~/structures/binary-tree/BalancedBinaryTree';
 import type { TreeNode } from '~/structures/binary-tree/TreeNode';
+import { animationSpeeds, calculateAnimationDuration } from '~/utils/visualization';
 
 /**
  * Props for the BinaryTreeProvider component
@@ -659,7 +660,9 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
       if (step >= 0 && step < algorithmSteps.length) {
         const currentStepData = algorithmSteps[step];
         setCurrentStepDescription(currentStepData.description);
-        setHighlightedNodes(currentStepData.highlightedNodes || ([] as Array<T>));
+        setHighlightedNodes(
+          (currentStepData.highlightedNodes as unknown as Array<T>) || ([] as Array<T>)
+        );
       }
     },
     [algorithmSteps]
@@ -707,19 +710,10 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
       clearInterval(animationTimerRef.current);
     }
 
-    // Get interval based on speed
-    const getInterval = () => {
-      switch (animationSpeed) {
-        case 'slow':
-          return 1500;
-        case 'medium':
-          return 800;
-        case 'fast':
-          return 400;
-        default:
-          return 800;
-      }
-    };
+    // Calculate appropriate animation duration based on the complexity
+    // Use node count and selected animation speed
+    const nodeCount = orderedNodes.length;
+    const intervalTime = calculateAnimationDuration(nodeCount, animationSpeed);
 
     // Set up a timer to advance the animation
     animationTimerRef.current = window.setInterval(() => {
@@ -739,8 +733,8 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
         updateCurrentStepState(nextStep);
         return nextStep;
       });
-    }, getInterval()) as number;
-  }, [currentStep, totalSteps, animationSpeed, updateCurrentStepState]);
+    }, intervalTime / 2) as number; // Half interval for smoother appearance
+  }, [currentStep, totalSteps, animationSpeed, updateCurrentStepState, orderedNodes.length]);
 
   const pauseAnimation = useCallback(() => {
     setIsAnimationPlaying(false);

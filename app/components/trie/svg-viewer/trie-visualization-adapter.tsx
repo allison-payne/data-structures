@@ -2,19 +2,15 @@ import React from 'react';
 import { DataStructureVisualization } from '~/components/shared/visualization-base';
 import { useTrieContext } from '~/context/TrieContext';
 import { TrieNode } from '~/structures/trie/TrieNode';
-import { initialViewBox } from '~/components/svg/constants';
 import SVG from '~/components/svg';
 import TrieEdge from '../trie-edge';
 import TrieNodeSVG from '../trie-node';
-import type {
-  VisualizationNodeProps,
-  VisualizationEdgeProps,
-} from '~/components/shared/visualization-base/types';
+import type { VisualizationNodeProps, VisualizationEdgeProps } from '~/utils/visualization/types';
+import { scaleCoordinate } from '~/utils/visualization';
 
 /**
  * Adapter component to use the generic DataStructureVisualization for trie data structure
  * Demonstrates how specific data structure visualizations can extend the base component
- *
  * @returns A rendered trie visualization
  */
 export function TrieVisualizationAdapter() {
@@ -26,7 +22,7 @@ export function TrieVisualizationAdapter() {
    * @returns {string} The scaled coordinate as a string
    */
   const getScaledCoords = (coordValue: number): string => {
-    return `${coordValue * initialViewBox}`;
+    return scaleCoordinate(coordValue);
   };
 
   // Function to collect all nodes and edges for rendering

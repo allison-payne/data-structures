@@ -2,11 +2,11 @@ import React from 'react';
 import { DataStructureVisualization } from '~/components/shared/visualization-base';
 import { useBinaryTreeContext } from '~/context/BinaryTreeContext';
 import type { TreeNode } from '~/structures/binary-tree/TreeNode';
-import { initialViewBox } from '~/components/svg/constants';
 import TreeBranch from '~/components/svg/tree-branch';
 import TreeNodeSVG from '~/components/svg/tree-node';
 import SVG from '~/components/svg';
-import type { VisualizationNodeProps } from '~/components/shared/visualization-base/types';
+import type { VisualizationNodeProps } from '~/utils/visualization/types';
+import { scaleCoordinate } from '~/utils/visualization';
 
 /**
  * Adapter component to use the generic DataStructureVisualization for binary trees
@@ -24,7 +24,7 @@ export function BinaryTreeVisualizationAdapter<T>() {
    * @returns {string} The scaled coordinate as a string
    */
   const getScaledCoords = (coordValue: number): string => {
-    return `${coordValue * initialViewBox}`;
+    return scaleCoordinate(coordValue);
   };
 
   /**
