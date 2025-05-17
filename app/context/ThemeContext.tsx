@@ -10,6 +10,12 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+/**
+ * Provider component for the theme context
+ * @param {object} props - The component props
+ * @param {React.ReactNode} props.children - Child components that will have access to the theme context
+ * @returns {React.ReactElement} The provider component
+ */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Initialize theme from localStorage or system preference
   const [theme, setTheme] = useState<Theme>(() => {

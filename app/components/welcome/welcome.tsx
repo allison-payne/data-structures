@@ -5,7 +5,7 @@ import { TRIE_ROUTE } from '~/routes/trie';
 
 /**
  * Welcome component that displays introductory information about the application
- * @returns {React.JSX.Element} JSX element containing the welcome message
+ * @returns {React.ReactElement} JSX element containing the welcome message
  */
 export function Welcome() {
   return (

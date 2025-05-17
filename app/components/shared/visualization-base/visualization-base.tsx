@@ -58,7 +58,7 @@ export interface DataStructureVisualizationProps {
  * @param {number|string} [props.width] - Optional width for the container (default: 100%)
  * @param {number|string} [props.height] - Optional height for the container (default: aspect ratio 1:1)
  * @param {object} [props.options] - Optional rendering options specific to the data structure
- * @returns {React.JSX.Element} The visualization container with rendered content
+ * @returns {React.ReactElement} The visualization container with rendered content
  */
 export function DataStructureVisualization({
   children,

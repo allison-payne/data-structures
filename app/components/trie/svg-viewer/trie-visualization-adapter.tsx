@@ -5,13 +5,14 @@ import { TrieNode } from '~/structures/trie/TrieNode';
 import SVG from '~/components/svg';
 import TrieEdge from '../trie-edge';
 import TrieNodeSVG from '../trie-node';
-import type { VisualizationNodeProps, VisualizationEdgeProps } from '~/utils/visualization/types';
+// These types will be needed when we uncomment the mapping functions
+// import type { VisualizationNodeProps, VisualizationEdgeProps } from '~/utils/visualization/types';
 import { scaleCoordinate } from '~/utils/visualization';
 
 /**
  * Adapter component to use the generic DataStructureVisualization for trie data structure
  * Demonstrates how specific data structure visualizations can extend the base component
- * @returns A rendered trie visualization
+ * @returns {React.ReactElement} A rendered trie visualization
  */
 export function TrieVisualizationAdapter() {
   const { trie, selectedNode, selectNode } = useTrieContext();
@@ -57,6 +58,9 @@ export function TrieVisualizationAdapter() {
   const { nodes, edges } = collectNodesAndEdges();
 
   // Transform the nodes and edges to our common visualization props format
+  // These functions are defined but not currently used
+  // Keeping them commented out to avoid linting errors while preserving the implementation pattern
+  /*
   const mapNodesToVisualizationProps = (nodes: TrieNode[]): VisualizationNodeProps<string>[] => {
     return nodes.map(node => ({
       data: node.character,
@@ -79,6 +83,7 @@ export function TrieVisualizationAdapter() {
       label: edge.char,
     }));
   };
+  */
 
   // The Content for the visualization is still using the existing SVG component
   // This is an intermediate step - a full refactor would create a common SVG wrapper

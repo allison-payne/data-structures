@@ -15,14 +15,15 @@ export interface IDataNode<T> {
  * Base interface for all data structures
  * Defines the common methods that all data structures should implement
  * @template T The type of data stored in the structure
- * @template N The specific node type used in the structure, extending DataNode<T>
+ * @template N The specific node type used in the structure, extending IDataNode<T>
  */
 export interface IDataStructure<T, N extends IDataNode<T> = IDataNode<T>> {
   /**
    * Adds a new value to the data structure
    * @param value The value to add
+   * @returns The newly created node of type N, or null/void if not applicable
    */
-  add(value: T): void | null;
+  add(value: T): N | void | null;
 
   /**
    * Checks if a value exists in the data structure

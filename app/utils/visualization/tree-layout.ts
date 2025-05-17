@@ -28,7 +28,7 @@ export interface TreeLayoutNode {
   parent?: TreeLayoutNode | null;
   left?: TreeLayoutNode | null;
   right?: TreeLayoutNode | null;
-  data?: any; // For compatibility with existing tree nodes
+  data?: unknown; // For compatibility with existing tree nodes
 }
 
 /**
@@ -112,9 +112,9 @@ export function groupNodesByDepth(
   const nodesByLevel = new Map<number, TreeLayoutNode[]>();
 
   /**
-   *
-   * @param node
-   * @param depth
+   * Recursive function to traverse the tree and group nodes by depth
+   * @param {TreeLayoutNode} node - Current node to process
+   * @param {number} depth - Current depth in the tree
    */
   function traverse(node: TreeLayoutNode, depth: number) {
     if (!nodesByLevel.has(depth)) {
@@ -128,9 +128,9 @@ export function groupNodesByDepth(
     if (node.right) traverse(node.right, depth + 1);
 
     // For non-binary trees with a children collection
-    const anyNode = node as any;
-    if (anyNode.children && typeof anyNode.children.forEach === 'function') {
-      anyNode.children.forEach((child: any) => {
+    const extendedNode = node as { children?: Array<TreeLayoutNode> };
+    if (extendedNode.children && typeof extendedNode.children.forEach === 'function') {
+      extendedNode.children.forEach((child: TreeLayoutNode) => {
         traverse(child, depth + 1);
       });
     }
@@ -141,4 +141,234 @@ export function groupNodesByDepth(
   }
 
   return nodesByLevel;
+}
+
+/**
+ * Implementation of the Reingold-Tilford algorithm for positioning tree nodes.
+ * This algorithm ensures optimal horizontal spacing in binary trees by:
+ * - Computing best positions for subtrees recursively
+ * - Ensuring no overlap between left and right subtree nodes
+ * - Centering parent nodes over their children
+ * @param {TreeLayoutNode} rootNode - Root node of the tree
+ * @param {number} horizontalSpacing - Minimum horizontal distance between adjacent nodes
+ * @param {number} verticalSpacing - Vertical distance between parent and child nodes
+ */
+export function applyReingoldTilfordLayout(
+  rootNode: TreeLayoutNode,
+  horizontalSpacing = DEFAULT_TREE_LAYOUT.SPACE_BETWEEN_SIBLINGS,
+  verticalSpacing = DEFAULT_TREE_LAYOUT.SPACE_BETWEEN_CHILDREN
+): void {
+  // If tree is empty, do nothing
+  if (!rootNode) return;
+
+  // Track the x-coordinate and contours of subtrees
+  interface ContourInfo {
+    minX: number;
+    maxX: number;
+    leftContour: Map<number, number>; // Level -> min X at level
+    rightContour: Map<number, number>; // Level -> max X at level
+  }
+
+  /**
+   * First pass of the algorithm: compute initial positions and contours
+   * @param {TreeLayoutNode} node - Current node being processed
+   * @param {number} depth - Current depth level in the tree
+   * @returns {ContourInfo} Information about subtree contours and bounds
+   */
+  function firstPass(node: TreeLayoutNode, depth = 0): ContourInfo {
+    // Base case for leaf nodes
+    if (!node.left && !node.right) {
+      const leftContour = new Map<number, number>();
+      const rightContour = new Map<number, number>();
+      leftContour.set(depth, 0);
+      rightContour.set(depth, 0);
+
+      return {
+        minX: 0,
+        maxX: 0,
+        leftContour,
+        rightContour,
+      };
+    }
+
+    let leftInfo: ContourInfo | null = null;
+    let rightInfo: ContourInfo | null = null;
+    let shift = 0;
+
+    // Process left subtree
+    if (node.left) {
+      leftInfo = firstPass(node.left, depth + 1);
+    }
+
+    // Process right subtree
+    if (node.right) {
+      rightInfo = firstPass(node.right, depth + 1);
+    }
+
+    // Calculate positions based on children
+    if (leftInfo && rightInfo) {
+      // Find the required shift to avoid overlap
+      const leftLevels = [...leftInfo.leftContour.keys()];
+      const rightLevels = [...rightInfo.rightContour.keys()];
+      const maxLevel = Math.max(...leftLevels, ...rightLevels);
+
+      for (let level = depth + 1; level <= maxLevel; level++) {
+        const leftX = leftInfo.rightContour.get(level) ?? leftInfo.maxX;
+        const rightX = rightInfo.leftContour.get(level) ?? rightInfo.minX;
+
+        // Calculate minimum required shift to avoid overlap
+        const requiredSpace = horizontalSpacing / Math.pow(2, level - depth - 1);
+        const requiredShift = leftX + requiredSpace - rightX;
+
+        if (requiredShift > 0) {
+          shift = Math.max(shift, requiredShift);
+        }
+      }
+
+      // Apply shift to right subtree
+      if (shift > 0) {
+        rightInfo.minX += shift;
+        rightInfo.maxX += shift;
+        for (const [level, x] of rightInfo.leftContour.entries()) {
+          rightInfo.leftContour.set(level, x + shift);
+        }
+        for (const [level, x] of rightInfo.rightContour.entries()) {
+          rightInfo.rightContour.set(level, x + shift);
+        }
+      }
+    }
+
+    // Merge contours from children
+    const mergedLeftContour = new Map<number, number>();
+    const mergedRightContour = new Map<number, number>();
+
+    // Add current node to contours
+    mergedLeftContour.set(depth, 0);
+    mergedRightContour.set(depth, 0);
+
+    // Merge left subtree contour
+    if (leftInfo) {
+      for (const [level, x] of leftInfo.leftContour.entries()) {
+        mergedLeftContour.set(level, x);
+      }
+    }
+
+    // Merge right subtree contour
+    if (rightInfo) {
+      for (const [level, x] of rightInfo.rightContour.entries()) {
+        mergedRightContour.set(level, x);
+      }
+    }
+
+    // Calculate node position
+    let minX = 0;
+    let maxX = 0;
+
+    if (leftInfo && rightInfo) {
+      minX = Math.min(leftInfo.minX, rightInfo.minX);
+      maxX = Math.max(leftInfo.maxX, rightInfo.maxX);
+    } else if (leftInfo) {
+      minX = leftInfo.minX;
+      maxX = leftInfo.maxX;
+    } else if (rightInfo) {
+      minX = rightInfo.minX;
+      maxX = rightInfo.maxX;
+    }
+
+    return {
+      minX,
+      maxX,
+      leftContour: mergedLeftContour,
+      rightContour: mergedRightContour,
+    };
+  }
+
+  /**
+   * Second pass of the algorithm: position nodes based on calculated positions
+   * @param {TreeLayoutNode} node - Current node being processed
+   * @param {number} depth - Current depth level in the tree
+   * @param {number} offsetX - X-coordinate offset for the current node
+   */
+  function secondPass(node: TreeLayoutNode, depth = 0, offsetX = 0): void {
+    if (!node) return;
+
+    // Set Y coordinate by depth
+    node.coordinates.y = depth * verticalSpacing;
+
+    if (node.left && node.right) {
+      // Position left and right children
+      secondPass(node.left, depth + 1, offsetX);
+      secondPass(node.right, depth + 1, offsetX);
+
+      // Center parent between children
+      node.coordinates.x = (node.left.coordinates.x + node.right.coordinates.x) / 2;
+    } else if (node.left) {
+      // Only left child
+      secondPass(node.left, depth + 1, offsetX);
+      node.coordinates.x = node.left.coordinates.x;
+    } else if (node.right) {
+      // Only right child
+      secondPass(node.right, depth + 1, offsetX);
+      node.coordinates.x = node.right.coordinates.x;
+    } else {
+      // Leaf node
+      node.coordinates.x = offsetX;
+    }
+  }
+
+  // Run the algorithm
+  firstPass(rootNode);
+  secondPass(rootNode);
+
+  // Final normalization to ensure coordinates are within 0-1 range
+  normalizeCoordinates(rootNode);
+}
+
+/**
+ * Normalize tree node coordinates to 0-1 range by finding min/max and scaling
+ * @param {TreeLayoutNode} rootNode - Root node of the tree
+ */
+function normalizeCoordinates(rootNode: TreeLayoutNode): void {
+  if (!rootNode) return;
+
+  // Collect all nodes
+  const nodes: TreeLayoutNode[] = [];
+  collectAllNodes(rootNode, nodes);
+
+  // Find bounds
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+
+  for (const node of nodes) {
+    minX = Math.min(minX, node.coordinates.x);
+    maxX = Math.max(maxX, node.coordinates.x);
+    minY = Math.min(minY, node.coordinates.y);
+    maxY = Math.max(maxY, node.coordinates.y);
+  }
+
+  // Normalize coordinates
+  const xRange = maxX - minX || 1;
+  const yRange = maxY - minY || 1;
+
+  for (const node of nodes) {
+    // Normalize to 0-1 range
+    node.coordinates.x = (node.coordinates.x - minX) / xRange;
+    node.coordinates.y = (node.coordinates.y - minY) / yRange;
+  }
+}
+
+/**
+ * Helper function to collect all nodes in a tree
+ * @param {TreeLayoutNode} node - Current node to process
+ * @param {TreeLayoutNode[]} result - Array to collect nodes into
+ */
+function collectAllNodes(node: TreeLayoutNode, result: TreeLayoutNode[]): void {
+  if (!node) return;
+
+  result.push(node);
+
+  if (node.left) collectAllNodes(node.left, result);
+  if (node.right) collectAllNodes(node.right, result);
 }

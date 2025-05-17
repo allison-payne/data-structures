@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DataStructureVisualization } from '~/components/shared/visualization-base';
 import { useBinaryTreeContext } from '~/context/BinaryTreeContext';
 import type { TreeNode } from '~/structures/binary-tree/TreeNode';
@@ -7,16 +7,38 @@ import TreeNodeSVG from '~/components/svg/tree-node';
 import SVG from '~/components/svg';
 import type { VisualizationNodeProps } from '~/utils/visualization/types';
 import { scaleCoordinate } from '~/utils/visualization';
+import { applyReingoldTilfordLayout } from '~/utils/visualization/tree-layout';
+
+/**
+ * Define our animation effect type locally, matching what's in TreeNodeSVG
+ */
+interface NodeEffect {
+  type?: 'pulse' | 'fadeOut' | 'highlight';
+  duration?: number;
+  progress?: number;
+}
 
 /**
  * Adapter component to use the generic DataStructureVisualization for binary trees
  * Demonstrates how specific data structure visualizations can extend the base component
  * @template T The type of data stored in the binary tree
- * @returns {React.JSX.Element} A rendered binary tree visualization
+ * @returns {React.ReactElement} A rendered binary tree visualization
  */
 export function BinaryTreeVisualizationAdapter<T>() {
   const { orderedTreeNodes, selectedNode, selectNode, highlightedNodes } =
     useBinaryTreeContext<T>();
+
+  // Store animation and operation states
+  const [nodeOperations, setNodeOperations] = useState<
+    Record<
+      string,
+      { operation: 'insert' | 'delete' | 'select' | 'restructure' | 'none'; timestamp: number }
+    >
+  >({});
+  const [animationEffects, setAnimationEffects] = useState<Record<string, NodeEffect>>({});
+
+  // Track previous tree state to detect changes
+  const previousNodesRef = useRef<TreeNode<T>[]>([]);
 
   /**
    * Converts coordinate values to SVG space by applying scaling
@@ -40,7 +62,103 @@ export function BinaryTreeVisualizationAdapter<T>() {
     return highlightedNodes.includes(nodeData as unknown as T);
   };
 
+  /**
+   * Apply the Reingold-Tilford algorithm to optimize node positioning
+   * This is called whenever the tree structure changes
+   */
+  useEffect(() => {
+    if (!orderedTreeNodes || orderedTreeNodes.length === 0) return;
+
+    // Get the root node (first element in pre-order traversal)
+    const rootNode = orderedTreeNodes[0];
+
+    // Apply the Reingold-Tilford algorithm for optimal layout
+    applyReingoldTilfordLayout(rootNode);
+
+    // Detect nodes that have changed position and create animations
+    const newOperations = { ...nodeOperations };
+    const newEffects = { ...animationEffects };
+
+    const previousNodesMap = new Map(
+      previousNodesRef.current.map(node => [String(node.data), node])
+    );
+
+    orderedTreeNodes.forEach(node => {
+      const nodeId = String(node.data);
+      const prevNode = previousNodesMap.get(nodeId);
+
+      // If node exists in previous state but position changed, it's a restructuring
+      if (
+        prevNode &&
+        (Math.abs(prevNode.coordinates.x - node.coordinates.x) > 0.001 ||
+          Math.abs(prevNode.coordinates.y - node.coordinates.y) > 0.001)
+      ) {
+        newOperations[nodeId] = { operation: 'restructure', timestamp: Date.now() };
+
+        // Add transition animation effect
+        newEffects[nodeId] = {
+          type: 'highlight',
+          duration: 500,
+          progress: 0,
+        };
+
+        // Start animation - we'll update progress in another effect
+        const interval = setInterval(() => {
+          setAnimationEffects(prev => {
+            const updated = { ...prev };
+            if (updated[nodeId]) {
+              const newProgress = (updated[nodeId].progress || 0) + 0.05;
+              if (newProgress >= 1) {
+                clearInterval(interval);
+                // Remove effect after animation completes
+                delete updated[nodeId];
+              } else {
+                updated[nodeId] = {
+                  ...updated[nodeId],
+                  progress: newProgress,
+                };
+              }
+            }
+            return updated;
+          });
+        }, 50);
+      }
+      // If node doesn't exist in previous state, it's a new node
+      else if (!prevNode) {
+        newOperations[nodeId] = { operation: 'insert', timestamp: Date.now() };
+      }
+    });
+
+    // Check for deleted nodes
+    previousNodesRef.current.forEach(prevNode => {
+      const nodeId = String(prevNode.data);
+      const stillExists = orderedTreeNodes.some(node => String(node.data) === nodeId);
+
+      if (!stillExists) {
+        // Keep deleted nodes with fade-out effect temporarily
+        newOperations[nodeId] = { operation: 'delete', timestamp: Date.now() };
+
+        // After animation, clean up the deleted node references
+        setTimeout(() => {
+          setNodeOperations(prev => {
+            const updated = { ...prev };
+            delete updated[nodeId];
+            return updated;
+          });
+        }, 1000);
+      }
+    });
+
+    setNodeOperations(newOperations);
+    setAnimationEffects(newEffects);
+
+    // Update reference to current tree state
+    previousNodesRef.current = [...orderedTreeNodes];
+  }, [orderedTreeNodes, nodeOperations, animationEffects]);
+
   // Transform the TreeNode objects to our common VisualizationNodeProps format
+  // This will be used in future refactoring to standardize visualization props
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const mapNodesToVisualizationProps = (nodes: TreeNode<T>[]): VisualizationNodeProps<T>[] => {
     return nodes.map(node => ({
       data: node.data,
@@ -48,6 +166,8 @@ export function BinaryTreeVisualizationAdapter<T>() {
       isSelected: selectedNode === node,
       isHighlighted: isNodeHighlighted(node),
       onClick: () => selectNode(node),
+      operation: nodeOperations[String(node.data)]?.operation || 'none',
+      effect: animationEffects[String(node.data)],
     }));
   };
 
@@ -85,6 +205,10 @@ export function BinaryTreeVisualizationAdapter<T>() {
 
       {/* Render nodes */}
       {orderedTreeNodes?.map((node, index) => {
+        const nodeId = String(node.data);
+        const operation = nodeOperations[nodeId]?.operation || 'none';
+        const effect = animationEffects[nodeId];
+
         return (
           <TreeNodeSVG<T>
             node={node}
@@ -92,6 +216,8 @@ export function BinaryTreeVisualizationAdapter<T>() {
             selectedNode={selectedNode}
             onClick={selectNode}
             highlighted={isNodeHighlighted(node)}
+            operation={operation}
+            effect={effect}
           />
         );
       })}

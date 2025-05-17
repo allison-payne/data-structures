@@ -6,15 +6,14 @@ import {
   calculateAngle,
   calculateDistance,
   calculateNodeSize,
-  calculateOptimalZoomLevel,
   easingFunctions,
-  createAnimationFrames,
+  // Removed unused imports
 } from '~/utils/visualization';
 
 /**
  * This component demonstrates using the shared visualization utilities
  * It creates a simple graph visualization to show the functions in action
- * @returns {JSX.Element} The visualization demo component
+ * @returns {React.ReactElement} The visualization demo component
  */
 export const VisualizationUtilsDemo = () => {
   // Animation state
@@ -39,17 +38,26 @@ export const VisualizationUtilsDemo = () => {
   const containerHeight = 100;
   const nodeSize = calculateNodeSize(nodePositions.length, containerWidth, containerHeight);
 
-  // Calculate optimal zoom level based on node count
-  const zoomLevel = calculateOptimalZoomLevel(
-    nodePositions.length,
-    containerWidth,
-    containerHeight
-  );
+  /* Example of calculating optimal zoom level based on node count:
+     const zoomLevel = calculateOptimalZoomLevel(
+       nodePositions.length,
+       containerWidth,
+       containerHeight
+     );
+     Not using this in the demo, but showing as reference
+  */
 
   // Animation effect
   useEffect(() => {
     let startTime: number;
     const duration = 3000; // 3 seconds for full animation cycle
+
+    // Initial node positions defined statically
+    const basePositions = [
+      { id: 1, label: 'Node 1', x: 0.2, y: 0.2 },
+      { id: 2, label: 'Node 2', x: 0.8, y: 0.2 },
+      { id: 3, label: 'Node 3', x: 0.5, y: 0.8 },
+    ];
 
     // Create animation frames for node movement
     const animate = (timestamp: number) => {
@@ -63,13 +71,13 @@ export const VisualizationUtilsDemo = () => {
 
       // Create a circular motion pattern for node 3
       const node3 = {
-        ...nodePositions[2],
+        ...basePositions[2],
         x: 0.5 + Math.sin(progress * Math.PI * 2) * 0.1,
         y: 0.8 + Math.cos(progress * Math.PI * 2) * 0.1,
       };
 
-      // Update positions
-      setNodePositions([nodePositions[0], nodePositions[1], node3]);
+      // Set positions without depending on current state
+      setNodePositions([basePositions[0], basePositions[1], node3]);
 
       animationRef.current = requestAnimationFrame(animate);
     };

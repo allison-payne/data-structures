@@ -11,7 +11,7 @@ import type { AlgorithmType, AnimationSpeed } from '~/utils/visualization/types'
 import { BinaryTree } from '~/structures/binary-tree/BinaryTree';
 import { BalancedBinaryTree } from '~/structures/binary-tree/BalancedBinaryTree';
 import type { TreeNode } from '~/structures/binary-tree/TreeNode';
-import { animationSpeeds, calculateAnimationDuration } from '~/utils/visualization';
+import { calculateAnimationDuration } from '~/utils/visualization';
 
 /**
  * Props for the BinaryTreeProvider component
@@ -28,9 +28,8 @@ interface BinaryTreeProviderProps<T> {
 /**
  * Represents a single step in an algorithm animation
  * Contains all the information needed to visualize one step of an algorithm
- * @template T The type of data stored in the binary tree
  */
-interface AlgorithmStep<T> {
+interface AlgorithmStep {
   /** Description of what happens in this step */
   description: string;
 
@@ -68,7 +67,7 @@ interface BinaryTreeContext<T> {
   currentStep: number;
   totalSteps: number;
   animationSpeed: AnimationSpeed;
-  algorithmSteps: AlgorithmStep<T>[];
+  algorithmSteps: AlgorithmStep[];
   highlightedNodes: Array<T>;
   currentStepDescription: string;
 
@@ -85,7 +84,9 @@ interface BinaryTreeContext<T> {
   canStepBackward: boolean;
 }
 
-let Context: any = null;
+// Using React.Context<unknown> as a placeholder until the context is created
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let Context = createContext<BinaryTreeContext<any>>({} as unknown as BinaryTreeContext<any>);
 
 /**
  * Provider component that wraps the application to provide binary tree context
@@ -212,7 +213,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [totalSteps, setTotalSteps] = useState<number>(0);
   const [animationSpeed, setAnimationSpeed] = useState<AnimationSpeed>('medium');
-  const [algorithmSteps, setAlgorithmSteps] = useState<AlgorithmStep<T>[]>([]);
+  const [algorithmSteps, setAlgorithmSteps] = useState<AlgorithmStep[]>([]);
   const [highlightedNodes, setHighlightedNodes] = useState<Array<T>>([]);
   const [currentStepDescription, setCurrentStepDescription] = useState<string>('');
 
@@ -221,8 +222,8 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
 
   // Generate algorithm steps based on the selected algorithm
   const generateAlgorithmSteps = useCallback(
-    (algorithm: AlgorithmType): AlgorithmStep<T>[] => {
-      const steps: AlgorithmStep<T>[] = [];
+    (algorithm: AlgorithmType): AlgorithmStep[] => {
+      const steps: AlgorithmStep[] = [];
 
       switch (algorithm) {
         case 'inOrderTraversal': {
@@ -834,7 +835,6 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
     }
   }, [tree, currentAlgorithm, setAlgorithmSteps, generateAlgorithmSteps]);
 
-  const TreeContext = Context as React.Context<BinaryTreeContext<T>>;
   const contextValue: BinaryTreeContext<T> = {
     tree,
     orderedTreeNodes: orderedNodes,
@@ -870,7 +870,7 @@ export function BinaryTreeProvider<T>({ children, initialData }: BinaryTreeProvi
     canStepBackward: currentStep > 0,
   };
 
-  return <TreeContext.Provider value={contextValue}>{children}</TreeContext.Provider>;
+  return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 }
 
 /**

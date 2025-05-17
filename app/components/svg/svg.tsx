@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ReactSVGPanZoom, TOOL_AUTO, type Tool, type Value } from 'react-svg-pan-zoom';
 import { useTheme } from '~/context/ThemeContext';
 import { calculateMaintainedAspectRatio, calculateViewBox } from '~/utils/visualization';
@@ -36,7 +36,7 @@ export type SVGProps = {
  * @param {string} [props.className] - Optional CSS classes to apply
  * @param {number|string} [props.width] - Optional width for the container
  * @param {number|string} [props.height] - Optional height for the container
- * @returns {React.JSX.Element} The SVG pan/zoom container with the provided children
+ * @returns {React.ReactElement} The SVG pan/zoom container with the provided children
  */
 const SVG = ({
   children,

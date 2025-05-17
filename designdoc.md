@@ -163,14 +163,14 @@ These are improvements that could enhance performance, user experience, or code 
 ### 2.1. Binary Tree Visualization
 
 - Optimize node positioning algorithm:
-  - [PARTIALLY IMPLEMENTED] ✓ Created shared tree layout utilities with improved algorithms
-  - [IN PROGRESS] Implement the Reingold-Tilford algorithm for tree drawing to optimize horizontal space
+  - [IMPLEMENTED] ✓ Created shared tree layout utilities with improved algorithms
+  - [IMPLEMENTED] ✓ Implemented the Reingold-Tilford algorithm for tree drawing to optimize horizontal space
   - [IMPLEMENTED] ✓ Added dynamic spacing through `calculateNodeOffset` utility
 - Add animation transitions:
-  - [PARTIALLY IMPLEMENTED] ✓ Created shared animation utilities with easing functions
+  - [IMPLEMENTED] ✓ Created shared animation utilities with easing functions
   - [IMPLEMENTED] ✓ Implemented animation duration calculation based on tree complexity
-  - [IN PROGRESS] Create animations for node position changes during tree restructuring
-  - Add visual feedback for selection, insertion, and deletion operations
+  - [IMPLEMENTED] ✓ Created animations for node position changes during tree restructuring
+  - [IMPLEMENTED] ✓ Added visual feedback for selection, insertion, and deletion operations
 - Improve coordinate calculation methods:
   - [IMPLEMENTED] ✓ Refactored coordinate calculations into shared utilities
   - [FIXED] ✓ Fix the typo in `calcNextX`: change `xAcc = + calcNextX(xAcc, node)` to `xAcc += calcNextX(xAcc, node)`
