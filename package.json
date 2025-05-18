@@ -8,7 +8,7 @@
     "build": "vite build",
     "dev": "vite",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc",
+    "typecheck": "tsc",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx app/",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx app/ --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",

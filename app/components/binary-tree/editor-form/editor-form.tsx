@@ -4,7 +4,7 @@ import AnimationControls from '../animation-controls';
 import AlgorithmSelector from '../algorithm-selector';
 import AlgorithmStatus from '../algorithm-status';
 import AlgorithmExplanation from '../algorithm-explanation';
-import type { AlgorithmType, AnimationSpeed } from '../types';
+import type { AlgorithmType, AnimationSpeed } from '~/utils/visualization/types';
 
 /**
  * Form component for interacting with the binary tree visualization

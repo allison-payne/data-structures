@@ -1,3 +1,4 @@
+import React from 'react';
 export type TreeBranchProps = {
   x1: string;
   y1: string;
@@ -14,7 +15,7 @@ export type TreeBranchProps = {
  * @param {string} props.x2 X coordinate of end point
  * @param {string} props.y2 Y coordinate of end point
  * @param {boolean} [props.highlighted] Whether this branch is highlighted in an algorithm
- * @returns {JSX.Element} SVG line representing the branch
+ * @returns {React.JSX.Element} SVG line representing the branch
  */
 export const TreeBranch = ({ x1, y1, x2, y2, highlighted = false }: TreeBranchProps) => {
   return (

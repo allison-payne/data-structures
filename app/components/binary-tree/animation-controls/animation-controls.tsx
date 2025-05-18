@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import type { AnimationControlsProps, AnimationSpeed } from '../types';
+import type { AnimationControlsProps, AnimationSpeed } from '~/utils/visualization/types';
 
 /**
  * Component for controlling algorithm animation playback

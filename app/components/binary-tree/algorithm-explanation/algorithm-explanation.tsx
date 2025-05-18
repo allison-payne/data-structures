@@ -1,5 +1,5 @@
 import React, { type JSX } from 'react';
-import type { AlgorithmType } from '../types';
+import type { AlgorithmType } from '~/utils/visualization/types';
 
 /**
  * Props for the AlgorithmExplanation component

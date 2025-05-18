@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { AlgorithmType } from '../types';
+import type { AlgorithmType } from '~/utils/visualization/types';
 
 /**
  * Represents a single step in an algorithm visualization

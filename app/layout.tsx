@@ -1,3 +1,4 @@
+import React from 'react';
 import { Outlet } from 'react-router';
 import Header from './components/header';
 import { useTheme } from './context/ThemeContext';
@@ -5,7 +6,7 @@ import { useTheme } from './context/ThemeContext';
 /**
  * Main layout component that wraps all pages
  * Contains the header and main content area
- * @returns {JSX.Element} The application layout
+ * @returns {React.JSX.Element} The application layout
  */
 const Layout = () => {
   const { theme } = useTheme();
